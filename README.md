@@ -1,2 +1,2 @@
 # DeepLearningProject
-Final project for Deep Learning Course
+Final project for the course Deep Learning
