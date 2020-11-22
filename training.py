@@ -29,8 +29,7 @@ in_channels = 3
 # Define network
 encoder = Encoder(in_channels, n_input)
 policy = Policy(encoder, n_input, num_actions)
-policy.cuda()
-
+policy.to('cpu')
 # Define optimizer
 # these are reasonable values but probably not optimal
 optimizer = torch.optim.Adam(policy.parameters(), lr=5e-4, eps=1e-5)
