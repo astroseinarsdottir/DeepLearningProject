@@ -3,18 +3,42 @@ import torch.nn as nn
 import torch.nn.functional as F
 from utils import make_env, Storage, orthogonal_init
 from model import Flatten, Encoder, Policy
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("total_steps", "--total_steps", type=int,
+                    default=8e6, help="")
+parser.add_argument("num_envs", "--num_envs", type=int,
+                    default=32, help="")
+parser.add_argument("num_levels", "--num_levels", type=int,
+                    default=10, help="")
+parser.add_argument("num_steps", "--num_steps", type=int,
+                    default=256, help="")
+parser.add_argument("num_epochs", "--num_epochs", type=int,
+                    default=3, help="")
+parser.add_argument("batch_size", "--batch_size", type=int,
+                    default=512, help="")
+parser.add_argument("eps", "--eps", type=float,
+                    default=.2, help="")
+parser.add_argument("grad_eps", "--grad_eps", type=float,
+                    default=.5, help="")
+parser.add_argument("value_coef", "--value_coef", type=float,
+                    default=.5, help="")
+parser.add_argument("entropy_coef", "--entropy_coef", type=float,
+                    default=.01, help="")
+args = parser.parse_args()
 
 # Hyperparameters
-total_steps = 8e6
-num_envs = 32
-num_levels = 10
-num_steps = 256
-num_epochs = 3
-batch_size = 512
-eps = .2
-grad_eps = .5
-value_coef = .5
-entropy_coef = .01
+total_steps = args.total_steps
+num_envs = args.num_envs
+num_levels = args.num_levels
+num_steps = args.num_steps
+num_epochs = args.num_epochs
+batch_size = args.batch_size
+eps = args.eps
+grad_eps = args.grad_eps
+value_coef = args.value_coef
+entropy_coef = args.entropy_coef
 
 # Define environment
 # check the utils.py file for info on arguments
