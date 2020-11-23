@@ -6,26 +6,16 @@ from model import Flatten, Encoder, Policy
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("total_steps", "--total_steps", type=int,
-                    default=8e6, help="")
-parser.add_argument("num_envs", "--num_envs", type=int,
-                    default=32, help="")
-parser.add_argument("num_levels", "--num_levels", type=int,
-                    default=10, help="")
-parser.add_argument("num_steps", "--num_steps", type=int,
-                    default=256, help="")
-parser.add_argument("num_epochs", "--num_epochs", type=int,
-                    default=3, help="")
-parser.add_argument("batch_size", "--batch_size", type=int,
-                    default=512, help="")
-parser.add_argument("eps", "--eps", type=float,
-                    default=.2, help="")
-parser.add_argument("grad_eps", "--grad_eps", type=float,
-                    default=.5, help="")
-parser.add_argument("value_coef", "--value_coef", type=float,
-                    default=.5, help="")
-parser.add_argument("entropy_coef", "--entropy_coef", type=float,
-                    default=.01, help="")
+parser.add_argument("--total_steps", type=float, default=8e6, help="", required=False)
+parser.add_argument("--num_envs", type=int, default=32, help="", required=False)
+parser.add_argument("--num_levels", type=int, default=10, help="", required=False)
+parser.add_argument("--num_steps", type=int, default=256, help="", required=False)
+parser.add_argument("--num_epochs", type=int, default=3, help="", required=False)
+parser.add_argument("--batch_size", type=int, default=512, help="", required=False)
+parser.add_argument("--eps", type=float, default=0.2, help="", required=False)
+parser.add_argument("--grad_eps", type=float, default=0.5, help="", required=False)
+parser.add_argument("--value_coef", type=float, default=0.5, help="", required=False)
+parser.add_argument("--entropy_coef", type=float, default=0.01, help="", required=False)
 args = parser.parse_args()
 
 # Hyperparameters
@@ -42,9 +32,9 @@ entropy_coef = args.entropy_coef
 
 # Define environment
 # check the utils.py file for info on arguments
-env = make_env(num_envs, num_levels=num_levels)
-print('Observation space:', env.observation_space)
-print('Action space:', env.action_space.n)
+env = make_env(num_envs, num_levels=num_levels, env_name="coinrun")
+print("Observation space:", env.observation_space)
+print("Action space:", env.action_space.n)
 
 
 n_input = env.observation_space.shape[0]
@@ -61,11 +51,7 @@ optimizer = torch.optim.Adam(policy.parameters(), lr=5e-4, eps=1e-5)
 
 # Define temporary storage
 # we use this to collect transitions during each iteration
-storage = Storage(
-    env.observation_space.shape,
-    num_steps,
-    num_envs
-)
+storage = Storage(env.observation_space.shape, num_steps, num_envs)
 
 # Run training
 obs = env.reset()
@@ -110,7 +96,7 @@ while step < total_steps:
             # Clipped policy objective
             ratio = torch.exp(new_log_prob - b_log_prob)
             pi_1 = ratio * b_advantage
-            pi_2 = ratio.clamp(1. - eps, 1. + eps) * b_advantage
+            pi_2 = ratio.clamp(1.0 - eps, 1.0 + eps) * b_advantage
             pi_loss = -torch.min(pi_1, pi_2).mean()
 
             # Clipped value function objective
@@ -135,7 +121,7 @@ while step < total_steps:
 
     # Update stats
     step += num_envs * num_steps
-    print(f'Step: {step}\tMean reward: {storage.get_reward()}')
+    print(f"Step: {step}\tMean reward: {storage.get_reward()}")
 
-print('Completed training!')
-torch.save(policy.state_dict(), 'checkpoint.pt')
+print("Completed training!")
+torch.save(policy.state_dict(), "checkpoint.pt")

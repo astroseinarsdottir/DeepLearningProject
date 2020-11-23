@@ -20,4 +20,4 @@ export PATH="$HOME/.local/bin:$PATH"
 cd ~/DeepLearning/DeepLearningProject
 
 echo "Running script"
-python3 training.py
+python3 training.py --total_steps 10e6 --num_levels 500
