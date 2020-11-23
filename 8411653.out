@@ -1,0 +1,69 @@
+Running script
+Observation space: Box(0.0, 1.0, (3, 64, 64), float32)
+Action space: 15
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@n-62-20-16>
+Subject: Job 8411653: <myJob> in cluster <dcc> Exited
+
+Job <myJob> was submitted from host <gbarlogin2> by user <s153999> in cluster <dcc> at Sun Nov 22 15:02:30 2020
+Job was executed on host(s) <n-62-20-16>, in queue <gpuv100>, as user <s153999> in cluster <dcc> at Sun Nov 22 15:02:31 2020
+</zhome/bb/1/109600> was used as the home directory.
+</zhome/bb/1/109600/DeepLearning/DeepLearningProject> was used as the working directory.
+Started at Sun Nov 22 15:02:31 2020
+Terminated at Sun Nov 22 15:02:46 2020
+Results reported at Sun Nov 22 15:02:46 2020
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -gpu "num=1"
+#BSUB -J myJob
+#BSUB -n 1
+#BSUB -W 10:00
+#BSUB -R "rusage[mem=32GB]"
+#BSUB -o %J.out
+#BSUB -e %J.err
+
+module load python3/3.8.0
+module load cuda/8.0
+module load cudnn/v7.0-prod-cuda8
+
+unset PYTHONHOME
+unset PYTHONPATH
+
+export PATH="$HOME/.local/bin:$PATH"
+
+cd ~/DeepLearning/DeepLearningProject
+
+echo "Running script"
+python3 training.py
+
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   6.36 sec.
+    Max Memory :                                 2548 MB
+    Average Memory :                             2548.00 MB
+    Total Requested Memory :                     32768.00 MB
+    Delta Memory :                               30220.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                12
+    Run time :                                   79 sec.
+    Turnaround time :                            16 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <8411653.err> for stderr output of this job.
+

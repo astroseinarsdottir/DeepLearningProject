@@ -7,7 +7,7 @@ from model import Flatten, Encoder, Policy
 # Hyperparameters
 total_steps = 8e6
 num_envs = 32
-num_levels = 10
+num_levels = 200
 num_steps = 256
 num_epochs = 3
 batch_size = 512

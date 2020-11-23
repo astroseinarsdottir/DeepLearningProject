@@ -1,0 +1,29 @@
+Loaded module: python3/3.8.0
+Loaded module: cuda/8.0
+Loaded module: cudnn/v7.0-prod-cuda8
+Loaded module: ffmpeg/4.2.2
+python3/3.8.0 is already loaded.
+cuda/8.0 is already loaded.
+cudnn/v7.0-prod-cuda8 is already loaded.
+Traceback (most recent call last):
+  File "training.py", line 54, in <module>
+    action, log_prob, value = policy.act(obs)
+  File "/zhome/bb/1/109600/DeepLearning/DeepLearningProject/model.py", line 42, in act
+    dist, value = self.forward(x)
+  File "/zhome/bb/1/109600/DeepLearning/DeepLearningProject/model.py", line 49, in forward
+    x = self.encoder(x)
+  File "/zhome/bb/1/109600/.local/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/zhome/bb/1/109600/DeepLearning/DeepLearningProject/model.py", line 28, in forward
+    return self.layers(x)
+  File "/zhome/bb/1/109600/.local/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/zhome/bb/1/109600/.local/lib/python3.8/site-packages/torch/nn/modules/container.py", line 117, in forward
+    input = module(input)
+  File "/zhome/bb/1/109600/.local/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/zhome/bb/1/109600/.local/lib/python3.8/site-packages/torch/nn/modules/conv.py", line 423, in forward
+    return self._conv_forward(input, self.weight)
+  File "/zhome/bb/1/109600/.local/lib/python3.8/site-packages/torch/nn/modules/conv.py", line 419, in _conv_forward
+    return F.conv2d(input, weight, self.bias, self.stride,
+RuntimeError: Input type (torch.cuda.FloatTensor) and weight type (torch.FloatTensor) should be the same
