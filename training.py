@@ -109,7 +109,7 @@ while step < total_steps:
             entropy_loss = new_dist.entropy().mean()
 
             # Backpropagate losses
-            loss = pi_loss + value_coef + value_loss - entropy_coef * entropy_loss
+            loss = pi_loss + value_coef * value_loss - entropy_coef * entropy_loss
             loss.backward()
 
             # Clip gradients
