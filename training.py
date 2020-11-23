@@ -6,7 +6,7 @@ from model import Flatten, Encoder, Policy
 
 # Hyperparameters
 total_steps = 8e6
-num_envs = 32
+num_envs = 64
 num_levels = 10
 num_steps = 256
 num_epochs = 3
@@ -91,15 +91,16 @@ while step < total_steps:
 
             # Clipped value function objective
             clipped_val = (new_value - b_value).clamp(-eps, eps)
+            #clipped_val = b_value + (new_value - b_value).clamp( -eps, eps) Maybe try this (add old value)
             val_s_1 = torch.pow(new_value - b_returns, 2)
-            val_s_2 = torch.pow(b_value - b_returns, 2)
+            val_s_2 = torch.pow(clipped_val - b_returns, 2) 
             value_loss = 0.5 * torch.max(val_s_1, val_s_2).mean()
 
-            # Entropy loss
+            # Entropy loss - Should read up on how other people are handeling this
             entropy_loss = new_dist.entropy().mean()
 
             # Backpropagate losses
-            loss = pi_loss + value_coef + value_loss - entropy_coef * entropy_loss
+            loss = pi_loss + value_coef * value_loss - entropy_coef * entropy_loss
             loss.backward()
 
             # Clip gradients
