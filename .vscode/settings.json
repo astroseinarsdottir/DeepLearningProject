@@ -1,0 +1,4 @@
+{
+    "python.pythonPath": "/appl/python/3.8.0/bin/python3",
+    "python.formatting.provider": "black"
+}

@@ -1,0 +1,170 @@
+Running script
+Observation space: Box(0.0, 1.0, (3, 64, 64), float32)
+Action space: 15
+Step: 8192	Mean reward: 0.625
+Step: 16384	Mean reward: 0.625
+Step: 24576	Mean reward: 1.5625
+Step: 32768	Mean reward: 0.625
+Step: 40960	Mean reward: 0.625
+Step: 49152	Mean reward: 0.625
+Step: 57344	Mean reward: 1.5625
+Step: 65536	Mean reward: 0.9375
+Step: 73728	Mean reward: 1.25
+Step: 81920	Mean reward: 0.9375
+Step: 90112	Mean reward: 2.1875
+Step: 98304	Mean reward: 3.4375
+Step: 106496	Mean reward: 1.5625
+Step: 114688	Mean reward: 2.8125
+Step: 122880	Mean reward: 2.5
+Step: 131072	Mean reward: 3.125
+Step: 139264	Mean reward: 1.875
+Step: 147456	Mean reward: 4.0625
+Step: 155648	Mean reward: 4.375
+Step: 163840	Mean reward: 4.6875
+Step: 172032	Mean reward: 6.25
+Step: 180224	Mean reward: 5.0
+Step: 188416	Mean reward: 5.3125
+Step: 196608	Mean reward: 5.625
+Step: 204800	Mean reward: 7.8125
+Step: 212992	Mean reward: 8.125
+Step: 221184	Mean reward: 9.6875
+Step: 229376	Mean reward: 10.625
+Step: 237568	Mean reward: 15.0
+Step: 245760	Mean reward: 10.625
+Step: 253952	Mean reward: 15.0
+Step: 262144	Mean reward: 19.6875
+Step: 270336	Mean reward: 18.4375
+Step: 278528	Mean reward: 20.3125
+Step: 286720	Mean reward: 19.0625
+Step: 294912	Mean reward: 21.875
+Step: 303104	Mean reward: 23.125
+Step: 311296	Mean reward: 27.1875
+Step: 319488	Mean reward: 24.6875
+Step: 327680	Mean reward: 25.625
+Step: 335872	Mean reward: 24.6875
+Step: 344064	Mean reward: 24.0625
+Step: 352256	Mean reward: 27.5
+Step: 360448	Mean reward: 25.0
+Step: 368640	Mean reward: 29.6875
+Step: 376832	Mean reward: 27.5
+Step: 385024	Mean reward: 25.9375
+Step: 393216	Mean reward: 25.9375
+Step: 401408	Mean reward: 25.0
+Step: 409600	Mean reward: 25.625
+Step: 417792	Mean reward: 25.3125
+Step: 425984	Mean reward: 27.1875
+Step: 434176	Mean reward: 27.1875
+Step: 442368	Mean reward: 29.0625
+Step: 450560	Mean reward: 24.375
+Step: 458752	Mean reward: 26.25
+Step: 466944	Mean reward: 25.9375
+Step: 475136	Mean reward: 22.5
+Step: 483328	Mean reward: 25.0
+Step: 491520	Mean reward: 26.5625
+Step: 499712	Mean reward: 26.875
+Step: 507904	Mean reward: 24.375
+Step: 516096	Mean reward: 29.0625
+Step: 524288	Mean reward: 25.625
+Step: 532480	Mean reward: 25.9375
+Step: 540672	Mean reward: 26.25
+Step: 548864	Mean reward: 25.3125
+Step: 557056	Mean reward: 27.1875
+Step: 565248	Mean reward: 26.875
+Step: 573440	Mean reward: 24.0625
+Step: 581632	Mean reward: 25.0
+Step: 589824	Mean reward: 24.375
+Step: 598016	Mean reward: 25.3125
+Step: 606208	Mean reward: 25.9375
+Step: 614400	Mean reward: 29.375
+Step: 622592	Mean reward: 26.25
+Step: 630784	Mean reward: 23.125
+Step: 638976	Mean reward: 27.8125
+Step: 647168	Mean reward: 26.875
+Step: 655360	Mean reward: 27.5
+Step: 663552	Mean reward: 26.5625
+Step: 671744	Mean reward: 28.75
+Step: 679936	Mean reward: 23.4375
+Step: 688128	Mean reward: 30.9375
+Step: 696320	Mean reward: 25.625
+Step: 704512	Mean reward: 26.25
+Step: 712704	Mean reward: 27.8125
+Step: 720896	Mean reward: 28.75
+Step: 729088	Mean reward: 30.9375
+Step: 737280	Mean reward: 27.1875
+Step: 745472	Mean reward: 24.6875
+Step: 753664	Mean reward: 27.1875
+Step: 761856	Mean reward: 26.5625
+Step: 770048	Mean reward: 26.5625
+Step: 778240	Mean reward: 26.875
+Step: 786432	Mean reward: 24.6875
+Step: 794624	Mean reward: 26.25
+Step: 802816	Mean reward: 27.5
+Step: 811008	Mean reward: 27.1875
+Step: 819200	Mean reward: 25.9375
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@n-62-20-3>
+Subject: Job 8415270: <myJob> in cluster <dcc> Exited
+
+Job <myJob> was submitted from host <gbarlogin2> by user <s153999> in cluster <dcc> at Mon Nov 23 14:14:16 2020
+Job was executed on host(s) <n-62-20-3>, in queue <gpuv100>, as user <s153999> in cluster <dcc> at Mon Nov 23 14:14:40 2020
+</zhome/bb/1/109600> was used as the home directory.
+</zhome/bb/1/109600/DeepLearning/DeepLearningProject> was used as the working directory.
+Started at Mon Nov 23 14:14:40 2020
+Terminated at Mon Nov 23 14:47:44 2020
+Results reported at Mon Nov 23 14:47:44 2020
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -gpu "num=1"
+#BSUB -J myJob
+#BSUB -n 1
+#BSUB -W 10:00
+#BSUB -R "rusage[mem=32GB]"
+#BSUB -o %J.out
+#BSUB -e %J.err
+
+module load python3/3.8.0
+module load cuda/8.0
+module load cudnn/v7.0-prod-cuda8
+
+unset PYTHONHOME
+unset PYTHONPATH
+
+export PATH="$HOME/.local/bin:$PATH"
+
+cd ~/DeepLearning/DeepLearningProject
+
+echo "Running script"
+python3 training.py --total_steps 10e6 --num_levels 500
+
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 130.
+
+Resource usage summary:
+
+    CPU time :                                   1953.81 sec.
+    Max Memory :                                 9218 MB
+    Average Memory :                             8697.59 MB
+    Total Requested Memory :                     32768.00 MB
+    Delta Memory :                               23550.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                13
+    Run time :                                   2023 sec.
+    Turnaround time :                            2008 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <8415270.err> for stderr output of this job.
+

@@ -1,0 +1,15 @@
+Loaded module: python3/3.8.0
+Loaded module: cuda/8.0
+Loaded module: cudnn/v7.0-prod-cuda8
+Loaded module: ffmpeg/4.2.2
+python3/3.8.0 is already loaded.
+cuda/8.0 is already loaded.
+cudnn/v7.0-prod-cuda8 is already loaded.
+Traceback (most recent call last):
+  File "training.py", line 9, in <module>
+    parser.add_argument("total_steps", "--total_steps", type=int, default=8e6, help="")
+  File "/appl/python/3.8.0/lib/python3.8/argparse.py", line 1354, in add_argument
+    kwargs = self._get_optional_kwargs(*args, **kwargs)
+  File "/appl/python/3.8.0/lib/python3.8/argparse.py", line 1489, in _get_optional_kwargs
+    raise ValueError(msg % args)
+ValueError: invalid option string 'total_steps': must start with a character '-'

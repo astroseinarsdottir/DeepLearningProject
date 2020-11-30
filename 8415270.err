@@ -1,0 +1,27 @@
+Loaded module: python3/3.8.0
+Loaded module: cuda/8.0
+Loaded module: cudnn/v7.0-prod-cuda8
+Loaded module: ffmpeg/4.2.2
+python3/3.8.0 is already loaded.
+cuda/8.0 is already loaded.
+cudnn/v7.0-prod-cuda8 is already loaded.
+Traceback (most recent call last):
+  File "training.py", line 68, in <module>
+    next_obs, reward, done, info = env.step(action)
+  File "/zhome/bb/1/109600/DeepLearning/DeepLearningProject/utils.py", line 274, in step
+    return self.step_wait()
+  File "/zhome/bb/1/109600/DeepLearning/DeepLearningProject/utils.py", line 585, in step_wait
+    obs, reward, done, info = self.venv.step_wait()
+  File "/zhome/bb/1/109600/DeepLearning/DeepLearningProject/utils.py", line 567, in step_wait
+    obs, reward, done, info = self.venv.step_wait()
+  File "/zhome/bb/1/109600/DeepLearning/DeepLearningProject/utils.py", line 550, in step_wait
+    obs, reward, done, info = self.venv.step_wait()
+  File "/zhome/bb/1/109600/DeepLearning/DeepLearningProject/utils.py", line 505, in step_wait
+    obs, rews, news, infos = self.venv.step_wait()
+  File "/zhome/bb/1/109600/DeepLearning/DeepLearningProject/utils.py", line 360, in step_wait
+    obs, rews, dones, infos = self.venv.step_wait()
+  File "/zhome/bb/1/109600/.local/lib/python3.8/site-packages/gym3/interop.py", line 324, in step_wait
+    return ob, rew, first, self.env.get_info()
+  File "/zhome/bb/1/109600/.local/lib/python3.8/site-packages/gym3/libenv.py", line 364, in get_info
+    self._c_lib.libenv_observe(self._c_env)
+KeyboardInterrupt
