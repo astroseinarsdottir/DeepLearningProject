@@ -5,6 +5,7 @@ from utils import make_env, Storage, orthogonal_init, saveArrayAsCSV
 from model import Flatten, Encoder, Policy
 import argparse
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Used to saved the mean reward
 steps_score = []
@@ -132,9 +133,10 @@ while step < total_steps:
     print(f"Step: {step}\tMean reward: {storage.get_reward()}")
 
     
-    if step % 100000 == 0:
+    if step%100000 == 0:
         plt.plot(steps_score)
-        plt.savefig(run_name+'/fig'+str(step/100000+'.png')
+        plt.savefig(run_name+'/fig'+str(step/100000)+'.png')
+
 
 print("Completed training!")
 saveArrayAsCSV(steps_score, run_name)
