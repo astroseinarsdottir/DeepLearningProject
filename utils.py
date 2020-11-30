@@ -18,6 +18,18 @@ from collections import deque
 Utility functions for the deep RL projects that I supervise in 02456 Deep Learning @ DTU.
 """
 
+"""
+Functions added by the group
+"""
+def saveArrayAsCSV(array, name):
+  a = np.asarray(array)
+  a.tofile(name+'/mean_reward.csv',sep=',')
+
+
+"""
+end -- Functions added by the group
+"""
+
 
 def make_env(
 	n_envs=32,
