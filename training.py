@@ -30,6 +30,7 @@ grad_eps = args.grad_eps
 value_coef = args.value_coef
 entropy_coef = args.entropy_coef
 
+
 # Define environment
 # check the utils.py file for info on arguments
 env = make_env(num_envs, num_levels=num_levels, env_name="coinrun")
@@ -100,12 +101,12 @@ while step < total_steps:
             pi_loss = -torch.min(pi_1, pi_2).mean()
 
             # Clipped value function objective
-            clipped_val = (new_value - b_value).clamp(-eps, eps)
+            clipped_val = b_value + (new_value - b_value).clamp( -eps, eps) 
             val_s_1 = torch.pow(new_value - b_returns, 2)
-            val_s_2 = torch.pow(b_value - b_returns, 2)
+            val_s_2 = torch.pow(clipped_val - b_returns, 2) 
             value_loss = 0.5 * torch.max(val_s_1, val_s_2).mean()
 
-            # Entropy loss
+            # Entropy loss - Should read up on how other people are handeling this
             entropy_loss = new_dist.entropy().mean()
 
             # Backpropagate losses
