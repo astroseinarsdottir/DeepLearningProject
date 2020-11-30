@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 steps_score = []
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--run_name", type=string, default="Run_"+str(np.random.random_integers(1,1e5)), help="", required=False)
+parser.add_argument("--run_name", type=str, default="Run_"+str(np.random.random_integers(1,1e5)), help="", required=False)
 parser.add_argument("--total_steps", type=float, default=8e6, help="", required=False)
 parser.add_argument("--num_envs", type=int, default=32, help="", required=False)
 parser.add_argument("--num_levels", type=int, default=10, help="", required=False)
