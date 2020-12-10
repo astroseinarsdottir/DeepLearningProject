@@ -41,6 +41,8 @@ entropy_coef = args.entropy_coef
 if not os.path.exists(run_name):
     os.makedirs(run_name)
 
+save_step = 10000
+
 # Define environment
 # check the utils.py file for info on arguments
 env = make_env(num_envs, num_levels=num_levels, env_name="coinrun")
@@ -134,16 +136,20 @@ while step < total_steps:
     step += num_envs * num_steps
     steps_score.append(storage.get_reward())
     print(f"Step: {step}\tMean reward: {storage.get_reward()}")
-    save_step = 300000
+
+
     if(step > save_step):
-        save_step += 300000
+        save_step += 10000
+        saveArrayAsCSV(steps_score, run_name)
         plt.plot(steps_score)
-        plt.savefig(run_name+'/'+str(step)+'.png', format="png")
+        plt.ylabel("Reward")
+        plt.xlabel("Training step (*10e3)")
+        plt.savefig(run_name+'/last_captured_reward_step_.png', format="png")
         plt.show()
         plt.close()
 
 
 print("Completed training!")
-saveArrayAsCSV(steps_score, run_name)
+
 torch.save(policy.state_dict(), run_name+'/'+"checkpoint.pt")
 

@@ -20,4 +20,4 @@ unset PYTHONPATH
 cd ~/DeepLearning/DeepLearningProject
 
 echo "Running script"
-python3 training.py --run_name 250_level_8e6 --total_steps 8e6 --num_levels 250
+python3 training.py --run_name 50_level_8e6 --total_steps 8e6 --num_levels 50
