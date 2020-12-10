@@ -1,11 +1,18 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from utils import make_env, Storage, orthogonal_init
+from utils import make_env, Storage, orthogonal_init, saveArrayAsCSV
 from model import Flatten, Encoder, Policy
 import argparse
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+
+# Used to saved the mean reward
+steps_score = []
 
 parser = argparse.ArgumentParser()
+parser.add_argument("--run_name", type=str, default="Run_"+str(np.random.random_integers(1,1e5)), help="", required=False)
 parser.add_argument("--total_steps", type=float, default=8e6, help="", required=False)
 parser.add_argument("--num_envs", type=int, default=32, help="", required=False)
 parser.add_argument("--num_levels", type=int, default=10, help="", required=False)
@@ -19,6 +26,7 @@ parser.add_argument("--entropy_coef", type=float, default=0.01, help="", require
 args = parser.parse_args()
 
 # Hyperparameters
+run_name = args.run_name
 total_steps = args.total_steps
 num_envs = args.num_envs
 num_levels = args.num_levels
@@ -30,6 +38,8 @@ grad_eps = args.grad_eps
 value_coef = args.value_coef
 entropy_coef = args.entropy_coef
 
+if not os.path.exists(run_name):
+    os.makedirs(run_name)
 
 # Define environment
 # check the utils.py file for info on arguments
@@ -122,7 +132,18 @@ while step < total_steps:
 
     # Update stats
     step += num_envs * num_steps
+    steps_score.append(storage.get_reward())
     print(f"Step: {step}\tMean reward: {storage.get_reward()}")
+    save_step = 300000
+    if(step > save_step):
+        save_step += 300000
+        plt.plot(steps_score)
+        plt.savefig(run_name+'/'+str(step)+'.png', format="png")
+        plt.show()
+        plt.close()
+
 
 print("Completed training!")
-torch.save(policy.state_dict(), "checkpoint.pt")
+saveArrayAsCSV(steps_score, run_name)
+torch.save(policy.state_dict(), run_name+'/'+"checkpoint.pt")
+

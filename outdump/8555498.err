@@ -1,0 +1,26 @@
+Loaded module: python3/3.8.0
+Loaded module: cuda/8.0
+Loaded module: cudnn/v7.0-prod-cuda8
+/zhome/25/b/144438/.lsbatch/1607626644.8555498.shell: line 20: cd: /zhome/25/b/144438/DeepLearning/DeepLearningProject: No such file or directory
+training.py:15: DeprecationWarning: This function is deprecated. Please call randint(1, 100000.0 + 1) instead
+  parser.add_argument("--run_name", type=str, default="Run_"+str(np.random.random_integers(1,1e5)), help="", required=False)
+Traceback (most recent call last):
+  File "training.py", line 79, in <module>
+    next_obs, reward, done, info = env.step(action)
+  File "/zhome/25/b/144438/DeepLearningProject/utils.py", line 269, in step
+    return self.step_wait()
+  File "/zhome/25/b/144438/DeepLearningProject/utils.py", line 542, in step_wait
+    obs, reward, done, info = self.venv.step_wait()
+  File "/zhome/25/b/144438/DeepLearningProject/utils.py", line 524, in step_wait
+    obs, reward, done, info = self.venv.step_wait()
+  File "/zhome/25/b/144438/DeepLearningProject/utils.py", line 509, in step_wait
+    obs, reward, done, info = self.venv.step_wait()
+  File "/zhome/25/b/144438/DeepLearningProject/utils.py", line 477, in step_wait
+    obs, rews, news, infos = self.venv.step_wait()
+  File "/zhome/25/b/144438/DeepLearningProject/utils.py", line 350, in step_wait
+    obs, rews, dones, infos = self.venv.step_wait()
+  File "/zhome/25/b/144438/.local/lib/python3.8/site-packages/gym3/interop.py", line 323, in step_wait
+    rew, ob, first = self.env.observe()
+  File "/zhome/25/b/144438/.local/lib/python3.8/site-packages/gym3/libenv.py", line 345, in observe
+    self._c_lib.libenv_observe(self._c_env)
+KeyboardInterrupt

@@ -15,9 +15,9 @@ module load cudnn/v7.0-prod-cuda8
 unset PYTHONHOME
 unset PYTHONPATH
 
-export PATH="$HOME/.local/bin:$PATH"
+# export PATH="$HOME/.local/bin:$PATH"
 
 cd ~/DeepLearning/DeepLearningProject
 
 echo "Running script"
-python3 training.py --total_steps 10e6 --num_levels 500 --batch_size 1024
+python3 training.py --run_name 250_level_8e6 --total_steps 8e6 --num_levels 250
