@@ -6,6 +6,7 @@ from model import Flatten, Encoder, Policy
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 # Used to saved the mean reward
 steps_score = []
@@ -37,6 +38,8 @@ grad_eps = args.grad_eps
 value_coef = args.value_coef
 entropy_coef = args.entropy_coef
 
+if not os.path.exists(run_name):
+    os.makedirs(run_name)
 
 # Define environment
 # check the utils.py file for info on arguments
@@ -131,14 +134,16 @@ while step < total_steps:
     step += num_envs * num_steps
     steps_score.append(storage.get_reward())
     print(f"Step: {step}\tMean reward: {storage.get_reward()}")
-
-    
-    if step%100000 == 0:
+    save_step = 300000
+    if(step > save_step):
+        save_step += 300000
         plt.plot(steps_score)
-        plt.savefig(run_name+'/fig'+str(step/100000)+'.png')
+        plt.savefig(run_name+'/'+str(step)+'.png', format="png")
+        plt.show()
+        plt.close()
 
 
 print("Completed training!")
 saveArrayAsCSV(steps_score, run_name)
-torch.save(policy.state_dict(), "checkpoint.pt")
+torch.save(policy.state_dict(), run_name+'/'+"checkpoint.pt")
 
