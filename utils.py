@@ -13,6 +13,7 @@ import torch.nn as nn
 from torch.utils.data.sampler import BatchSampler, SubsetRandomSampler
 from procgen import ProcgenEnv
 from collections import deque
+import pandas as pd
 
 """
 Utility functions for the deep RL projects that I supervise in 02456 Deep Learning @ DTU.
@@ -21,9 +22,13 @@ Utility functions for the deep RL projects that I supervise in 02456 Deep Learni
 """
 Functions added by the group
 """
-def saveArrayAsCSV(array, name):
-  a = np.asarray(array)
-  a.tofile(name+'/mean_reward.csv',sep=',')
+def saveArrayAsCSV(array, name,ext):
+	a = np.asarray(array)
+	a.tofile(name+'/mean_reward__'+ext+'.csv',sep=',')
+  
+def saveTensorAsCSV(tensor, name,ext):
+ 	torch.save(tensor, name+'/reward__'+ext+'_tensor.pt')
+
 
 
 """
@@ -121,6 +126,17 @@ class Storage():
 			returns = self.returns.reshape(-1)[indices].cuda()
 			advantage = self.advantage.reshape(-1)[indices].cuda()
 			yield obs, action, log_prob, value, returns, advantage
+   
+	def get_full_reward(self, normalized_reward=True):
+		if normalized_reward:
+			reward = []
+			for step in range(self.num_steps):
+				info = self.info[step]
+				reward.append([d['reward'] for d in info])
+			reward = torch.Tensor(reward)
+		else:
+			reward = self.reward
+		return reward
 
 	def get_reward(self, normalized_reward=True):
 		if normalized_reward:
