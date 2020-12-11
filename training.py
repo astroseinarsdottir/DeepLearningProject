@@ -151,20 +151,15 @@ while step < total_steps:
     
 
     
-    df_current = {'Step': [step], 'Average_Reward': [storage.get_reward().item()]}
+    df_current = {'Step': step, 'Average_Reward': storage.get_reward().item()}
     df_reward = df_reward.append(df_current, ignore_index = True) 
     #steps_score_full.append(storage.get_full_reward())
     print(f"Step: {step}\tMean reward: {storage.get_reward()}")
     #plt.plot(df_reward.Step, df_reward.Average_Reward)
     
-    """
-    df_reward.plot(x ='Step', y='Average_Reward', kind = 'line')
-    plt.ylabel("Reward")
-    plt.xlabel("Training step (*10e3)")
-    plt.savefig(run_name+'/last_captured_reward_step_.png', format="png")
-    plt.show()
-    plt.close()
-    """
+    
+
+    
  
     #fig = sns_plot.get_figure()
     #fig.savefig(run_name+'/last_captured_reward_step_.png')
@@ -173,6 +168,12 @@ while step < total_steps:
         #saveArrayAsCSV(steps_score, run_name,"average")
         df_reward.to_csv(run_name+'/reward.csv')
         #saveTensorAsCSV(steps_score_full, run_name,"full")
+        df_reward.plot(x ='Step', y='Average_Reward', kind = 'line')
+        plt.ylabel("Reward")
+        plt.xlabel("Training step")
+        plt.savefig(run_name+'/last_captured_reward_step_.png', format="png")
+        plt.show()
+        plt.close()
 
 
 
