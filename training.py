@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from utils import make_env, Storage, orthogonal_init, saveArrayAsCSV
+from utils import make_env, Storage, orthogonal_init, saveArrayAsCSV, saveTensorAsCSV
 from model import Flatten, Encoder, Policy
 import argparse
 import numpy as np
@@ -10,6 +10,7 @@ import os
 
 # Used to saved the mean reward
 steps_score = []
+steps_score_full = []
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--run_name", type=str, default="Run_"+str(np.random.random_integers(1,1e5)), help="", required=False)
@@ -40,6 +41,7 @@ entropy_coef = args.entropy_coef
 
 if not os.path.exists(run_name):
     os.makedirs(run_name)
+    
 
 save_step = 10000
 
@@ -69,6 +71,13 @@ storage = Storage(env.observation_space.shape, num_steps, num_envs)
 # Run training
 obs = env.reset()
 step = 0
+
+param_string = str(run_name)+"\nTotal steps: "+str(total_steps)+"\nNum envs: "+str(num_envs)+"\nNum actions: "+str(num_actions)+"\nN levels: "+str(num_levels)+"\nN epochs: "+str(num_epochs)+"\nBatch size: "+str(batch_size)+"\neps: "+str(eps)+"\ngrad_eps: "+str(grad_eps)+"\nValue coef: "+str(value_coef)+"\nEntropy coef: "+str(entropy_coef)
+
+with open(run_name+'/infos.txt', 'w') as f:
+    f.write(param_string)
+
+
 while step < total_steps:
 
     # Use policy to collect data for num_steps steps
@@ -135,18 +144,17 @@ while step < total_steps:
     # Update stats
     step += num_envs * num_steps
     steps_score.append(storage.get_reward())
+    steps_score_full.append(storage.get_full_reward())
     print(f"Step: {step}\tMean reward: {storage.get_reward()}")
 
-
-    if(step > save_step):
-        save_step += 10000
-        saveArrayAsCSV(steps_score, run_name)
-        plt.plot(steps_score)
-        plt.ylabel("Reward")
-        plt.xlabel("Training step (*10e3)")
-        plt.savefig(run_name+'/last_captured_reward_step_.png', format="png")
-        plt.show()
-        plt.close()
+    saveArrayAsCSV(steps_score, run_name,"average")
+    saveTensorAsCSV(steps_score_full, run_name,"full")
+    plt.plot(steps_score)
+    plt.ylabel("Reward")
+    plt.xlabel("Training step (*10e3)")
+    plt.savefig(run_name+'/last_captured_reward_step_.png', format="png")
+    plt.show()
+    plt.close()
 
 
 print("Completed training!")
