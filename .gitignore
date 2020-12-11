@@ -2,5 +2,9 @@
 *.out
 */**
 *.pyc
-*/**.pyc
+/__pycache__/
+__pycache__
+__pycache__/**
+__pycache__/*
 outdump
+__pycache__/utils.cpython-38.pyc
