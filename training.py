@@ -43,7 +43,7 @@ if not os.path.exists(run_name):
     os.makedirs(run_name)
     
 
-save_step = 10000
+save_step = 1
 
 # Define environment
 # check the utils.py file for info on arguments
@@ -146,18 +146,22 @@ while step < total_steps:
     steps_score.append(storage.get_reward())
     steps_score_full.append(storage.get_full_reward())
     print(f"Step: {step}\tMean reward: {storage.get_reward()}")
-
-    saveArrayAsCSV(steps_score, run_name,"average")
-    saveTensorAsCSV(steps_score_full, run_name,"full")
     plt.plot(steps_score)
     plt.ylabel("Reward")
     plt.xlabel("Training step (*10e3)")
     plt.savefig(run_name+'/last_captured_reward_step_.png', format="png")
     plt.show()
     plt.close()
+    
+    if (step > save_step):
+        save_step += 500000
+        saveArrayAsCSV(steps_score, run_name,"average")
+        saveTensorAsCSV(steps_score_full, run_name,"full")
+
 
 
 print("Completed training!")
-
+saveArrayAsCSV(steps_score, run_name,"average")
+saveTensorAsCSV(steps_score_full, run_name,"full")
 torch.save(policy.state_dict(), run_name+'/'+"checkpoint.pt")
 
