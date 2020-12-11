@@ -7,10 +7,15 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import pandas as pd
+import seaborn as sns
 
 # Used to saved the mean reward
 steps_score = []
 steps_score_full = []
+
+d = {'Step': [], 'Average_Reward': []}
+df_reward = pd.DataFrame(data=d)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--run_name", type=str, default="Run_"+str(np.random.random_integers(1,1e5)), help="", required=False)
@@ -143,20 +148,31 @@ while step < total_steps:
 
     # Update stats
     step += num_envs * num_steps
-    steps_score.append(storage.get_reward())
-    steps_score_full.append(storage.get_full_reward())
+    
+
+    
+    df_current = {'Step': [step], 'Average_Reward': [storage.get_reward().item()]}
+    df_reward = df_reward.append(df_current, ignore_index = True) 
+    #steps_score_full.append(storage.get_full_reward())
     print(f"Step: {step}\tMean reward: {storage.get_reward()}")
-    plt.plot(steps_score)
+    #plt.plot(df_reward.Step, df_reward.Average_Reward)
+    
+    """
+    df_reward.plot(x ='Step', y='Average_Reward', kind = 'line')
     plt.ylabel("Reward")
     plt.xlabel("Training step (*10e3)")
     plt.savefig(run_name+'/last_captured_reward_step_.png', format="png")
     plt.show()
     plt.close()
-    
+    """
+ 
+    #fig = sns_plot.get_figure()
+    #fig.savefig(run_name+'/last_captured_reward_step_.png')
     if (step > save_step):
-        save_step += 500000
-        saveArrayAsCSV(steps_score, run_name,"average")
-        saveTensorAsCSV(steps_score_full, run_name,"full")
+        save_step += 30000
+        #saveArrayAsCSV(steps_score, run_name,"average")
+        df_reward.to_csv(run_name+'/reward.csv')
+        #saveTensorAsCSV(steps_score_full, run_name,"full")
 
 
 
