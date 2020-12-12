@@ -20,7 +20,7 @@ class Encoder(nn.Module):
             nn.Conv2d(in_channels=64, out_channels=64,
                       kernel_size=3, stride=1), nn.ReLU(),
             Flatten(),
-            nn.Linear(in_features=1024, out_features=feature_dim), nn.ReLU()
+            nn.Linear(in_features=1024, out_features=feature_dim), nn.Tanh()
         )
         self.apply(orthogonal_init)
 
