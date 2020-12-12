@@ -7,6 +7,7 @@ from scipy.interpolate import UnivariateSpline
 import matplotlib.pyplot as plt
 from numpy import genfromtxt
 sns.set_theme()
+from matplotlib.colors import LogNorm
 
 
 def smooth(y, box_pts):
@@ -48,11 +49,13 @@ total_df = df.append(df3)
 total_df = total_df.append(df2)
 total_df = total_df.append(df4)
 
-
+lognorm = LogNorm(vmin=1, vmax=50000)
 
 print(total_df.info())
+fig_dims = (10, 6)
+fig, ax = plt.subplots(figsize=fig_dims)
 sns.lineplot(
-    data=total_df, x="Step", y="Smoothed Reward", hue="Number of levels", palette="Set2"
+    data=total_df, x="Step", y="Smoothed Reward", hue="Number of levels", palette="Blues",hue_norm=lognorm
 )
 
 #plt.plot(df['Step'], df['Average_Reward'])
@@ -61,7 +64,7 @@ sns.lineplot(
 #plt.plot(df3['Step'][0:-5], smooth(df3['Average_Reward'],5)[0:-5])
 #plt.plot(df3['Step'], df3['Average_Reward'])
 
-plt.title("Mean reward and activation function")
+plt.title("Influence of level number on training")
 #plt.ylabel("Mean Reward")
 #plt.xlabel("Training step (*10e3)")
 
