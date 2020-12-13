@@ -38,10 +38,10 @@ end -- Functions added by the group
 
 def make_env(
 	n_envs=32,
-	env_name='starpilot',
+	env_name='coinrun',
 	start_level=0,
 	num_levels=100,
-	use_backgrounds=False,
+	use_backgrounds=True,
 	normalize_obs=False,
 	normalize_reward=True,
 	seed=0
@@ -54,20 +54,20 @@ def make_env(
 		env_name=env_name,
 		start_level=start_level,
 		num_levels=num_levels,
-		distribution_mode='easy',
+		use_generated_assets=True,
+		distribution_mode='hard',
 		use_backgrounds=use_backgrounds,
 		restrict_themes=not use_backgrounds,
 		render_mode='rgb_array',
-		rand_seed=seed
+		rand_seed=1997
 	)
 	env = VecExtractDictObs(env, "rgb")
 	env = VecNormalize(env, ob=normalize_obs, ret=normalize_reward)
 	env = TransposeFrame(env)
 	env = ScaledFloatFrame(env)
 	env = TensorEnv(env)
-	
-	return env
 
+	return env
 
 class Storage():
 	def __init__(self, obs_shape, num_steps, num_envs, gamma=0.99, lmbda=0.95, normalize_advantage=True):

@@ -12,7 +12,7 @@ args = parser.parse_args()
 
 # Hyperparameters
 num_envs = 32
-num_levels = 1
+num_levels = 100
 checkpoint_file = args.pt_file
 
 # Make evaluation environment
@@ -32,7 +32,7 @@ policy.load_state_dict(torch.load(checkpoint_file))
 policy.eval()
 policy.cuda()
 
-for _ in range(512):
+for _ in range(1028):
 
     # Use policy
     action, log_prob, value = policy.act(obs)

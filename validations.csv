@@ -1,0 +1,7 @@
+Run name,Average_Reward
+benchmark_8e6,40.3125
+l2_regularization,29.6875
+lr_10e-4,8.4375
+dropout,51.25
+lr_55e-5_l2_dropout,0.0
+lr_5e-4_l2_dropout,58.125
