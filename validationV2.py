@@ -29,7 +29,7 @@ entropy_coef = .01
 grid_param = [[1,1]]
 
 # Make evaluation environment
-eval_env = make_env(num_envs, start_level=0, num_levels=0)
+eval_env = make_env(num_envs, start_level=10000, num_levels=0)
 obs = eval_env.reset()
 
 frames = []

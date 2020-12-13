@@ -15,10 +15,13 @@ class Encoder(nn.Module):
         self.layers = nn.Sequential(
             nn.Conv2d(in_channels=in_channels, out_channels=32,
                       kernel_size=8, stride=4), nn.ReLU(),
+            nn.BatchNorm2d(32),
             nn.Conv2d(in_channels=32, out_channels=64,
                       kernel_size=4, stride=2), nn.ReLU(),
+            nn.BatchNorm2d(64),        
             nn.Conv2d(in_channels=64, out_channels=64,
                       kernel_size=3, stride=1), nn.ReLU(),
+            nn.BatchNorm2d(64),
             Flatten(),
             nn.Linear(in_features=1024, out_features=feature_dim), nn.Tanh()
         )
