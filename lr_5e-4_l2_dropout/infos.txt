@@ -1,0 +1,11 @@
+lr_5e-4_l2_dropout
+Total steps: 8000000.0
+Num envs: 32
+Num actions: 15
+N levels: 5000
+N epochs: 3
+Batch size: 512
+eps: 0.2
+grad_eps: 0.5
+Value coef: 0.5
+Entropy coef: 0.01
