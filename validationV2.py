@@ -4,9 +4,15 @@ import torch.nn.functional as F
 from model import Policy, Flatten, Encoder
 from utils import make_env, Storage, orthogonal_init
 import imageio
+import pandas as pd
+import os
+import argparse
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--run_name", type=str, default="", help="", required=False)
+args = parser.parse_args()
+run_name = args.run_name
 
-    
 # Hyperparameters
 total_steps = 8e6
 num_envs = 32
@@ -18,7 +24,7 @@ eps = .2
 grad_eps = .5
 value_coef = .5
 entropy_coef = .01
-run_name = "32envlev50000_relu_L2_dropout"
+
 
 grid_param = [[1,1]]
 
@@ -39,7 +45,7 @@ policy.cuda()
 policy.load_state_dict(torch.load(run_name+'/checkpoint.pt'))
 policy.eval()
 
-for _ in range(512):
+for _ in range(1024):
     # Use policy
     action, log_prob, value = policy.act(obs)
 
@@ -62,8 +68,18 @@ print('Average return:', total_reward)
 frames = torch.stack(frames)
 imageio.mimsave(run_name+'.mp4', frames, fps=25)
 
-df_loaded = pd.read_csv("validations.csv", delimiter=',')
-df_current = {'Run name': run_name, 'Average_Reward': total_reward}
-df_save = df_loaded.append(df_current, ignore_index = True) 
+
+validation_file_name = "validations.csv"
+df_current = pd.DataFrame({'Run name': run_name, 'Average_Reward': total_reward.item()}, index=[0])
+
     
-df_save.to_csv("validations.csv")
+if not os.path.exists(validation_file_name):
+    df_current.to_csv(validation_file_name, index=False)
+else:
+    df_loaded = pd.read_csv(validation_file_name, delimiter=',')
+    df_save = df_loaded.append(df_current, ignore_index = True) 
+    df_save.to_csv(validation_file_name, index=False)
+
+
+    
+
