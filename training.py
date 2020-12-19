@@ -109,6 +109,7 @@ while step < total_steps:
 
     # Optimize policy
     policy.train()
+    
     for epoch in range(num_epochs):
 
         # Iterate over batches of transitions
