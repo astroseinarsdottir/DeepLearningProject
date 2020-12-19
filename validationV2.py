@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from model import Policy, Flatten, Encoder
+from model_tuned import Policy, Flatten, Encoder
 from utils import make_env, Storage, orthogonal_init
 import imageio
 import pandas as pd
@@ -16,7 +16,7 @@ run_name = args.run_name
 # Hyperparameters
 total_steps = 8e6
 num_envs = 32
-num_levels = 2
+num_levels = 50
 num_steps = 256
 num_epochs = 3
 batch_size = 512
@@ -66,7 +66,7 @@ print('Average return:', total_reward)
 
 # Save frames as video
 frames = torch.stack(frames)
-imageio.mimsave(run_name+'.mp4', frames, fps=25)
+imageio.mimsave("videos/"+run_name+'.mp4', frames, fps=25)
 
 
 validation_file_name = "validations.csv"

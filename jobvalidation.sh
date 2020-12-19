@@ -20,4 +20,4 @@ unset PYTHONPATH
 cd ~/DeepLearning/DeepLearningProject
 
 echo "Running script"
-python3 validationV2.py --run_name 32envlev50000_relu
+python3 validationV2.py --run_name 32envlev500_relu_L2_DO_BN
