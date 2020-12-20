@@ -1,9 +1,9 @@
 #!/bin/sh
 #BSUB -q gpuv100
 #BSUB -gpu "num=1"
-#BSUB -J myJob
+#BSUB -J regu_ac
 #BSUB -n 1
-#BSUB -W 10:00
+#BSUB -W 1:30
 #BSUB -R "rusage[mem=32GB]"
 #BSUB -o %J.out
 #BSUB -e %J.err
@@ -20,4 +20,4 @@ unset PYTHONPATH
 cd ~/DeepLearning/DeepLearningProject
 
 echo "Running script"
-python3 training.py --total_steps 10e6 --num_levels 50 --num_envs 5
+python3 training.py --run_name classcode --total_steps 8e6 --num_levels 5000 --num_envs 32

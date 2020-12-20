@@ -1,0 +1,11 @@
+50_level_8e6_total_1024_batch
+Total steps: 8000000.0
+Num envs: 32
+Num actions: 15
+N levels: 50
+N epochs: 3
+Batch size: 1024
+eps: 0.2
+grad_eps: 0.5
+Value coef: 0.5
+Entropy coef: 0.01
