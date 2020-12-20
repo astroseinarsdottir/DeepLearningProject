@@ -30,49 +30,29 @@ class Encoder(nn.Module):
 
     def forward(self, x):
         return self.layers(x)
-    
 
 
 class Policy(nn.Module):
-    def __init__(self, encoder, feature_dim, num_actions, hidden_dim):
+    def __init__(self, encoder, feature_dim, num_actions):
         super().__init__()
         self.encoder = encoder
-        
-        self.policy = nn.Sequential(
-            nn.Linear(feature_dim, hidden_dim),
-            nn.Tanh(),
-            nn.Linear(hidden_dim, num_actions),
-        )
+        self.policy = orthogonal_init(
+            nn.Linear(feature_dim, num_actions), gain=.01)
+        self.value = orthogonal_init(nn.Linear(feature_dim, 1), gain=1.)
 
     def act(self, x):
         with torch.no_grad():
             x = x.cuda().contiguous()
-            dist = self.forward(x)
+            dist, value = self.forward(x)
             action = dist.sample()
             log_prob = dist.log_prob(action)
 
-        return action.cpu(), log_prob.cpu()
+        return action.cpu(), log_prob.cpu(), value.cpu()
 
     def forward(self, x):
         x = self.encoder(x)
         logits = self.policy(x)
-
+        value = self.value(x).squeeze(1)
         dist = torch.distributions.Categorical(logits=logits)
 
-        return dist
-
-class Critic(nn.Module):
-    def __init__(self, encoder, state_dim, hidden_dim):
-        super().__init__()
-        self.encoder = encoder
-        self.net = nn.Sequential(
-            nn.Linear(state_dim, hidden_dim),
-            nn.Tanh(),
-            nn.Linear(hidden_dim, 1),
-        )
-
-    def forward(self, x):
-        with torch.no_grad():
-            x = x.cuda().contiguous()
-            x = self.encoder(x)
-        return self.net(x)
+        return dist, value
