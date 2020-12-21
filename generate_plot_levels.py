@@ -16,23 +16,32 @@ def smooth(y, box_pts):
     y_smooth = np.convolve(y, box, mode='same')
     return y_smooth
 
-df = pd.read_csv("32envlev500_relu_L2_dropout_bn/reward.csv", delimiter=',')
-df2 = pd.read_csv("32envlev500_tanh/reward.csv", delimiter=',')
+legend_name = "Value Coefficient"
+names = [
+    ['classcode_hard_o10','0.1'],
+    ['classcode_hard_o25','0.25'],
+    ['classcode_hard_o50','0.5'],
+    ['classcode_hard_o75','0.75'],
+    ['classcode_hard_o100','1']
+]
 
-df["Activation"]  = "ReLU + L2 + Dropout + BatchNorm"
-df["Reward"]  = smooth(df['Average_Reward'],15)
-df.drop(df.tail(15).index,inplace=True)
-df2["Activation"]  = "Tanh"
-df2["Reward"]  = smooth(df2['Average_Reward'],15)
-df2.drop(df2.tail(250).index,inplace=True)
-total_df = df.append(df2)
+df_total = pd.DataFrame()
 
-
-print(total_df.info())
+for name in names:
+    smooth_coeff = 20
+    df = pd.read_csv(name[0]+"/reward.csv", delimiter=',')
+    df[legend_name]  = name[1]
+    df["Reward"]  = smooth(df['Average_Reward'],smooth_coeff)
+    df.drop(df.tail(smooth_coeff).index,inplace=True)
+    if df_total.empty:
+        df_total = df
+    else:
+        df_total = df_total.append(df)
+    
 fig_dims = (10, 6)
 fig, ax = plt.subplots(figsize=fig_dims)
 sns.lineplot(
-    data=total_df, x="Step", y="Reward", hue="Activation", palette="Blues"
+    data=df_total, x="Step", y="Reward", hue=legend_name, palette="crest"
 )
 
 plt.title("Training on coinrun with various activations")
@@ -40,7 +49,7 @@ plt.title("Training on coinrun with various activations")
 #plt.xlabel("Training step (*10e3)")
 
 plt.show()
-plt.savefig("output_tanh_vs_relu_2.png")
+plt.savefig("compare.png")
 plt.close()
 
 """

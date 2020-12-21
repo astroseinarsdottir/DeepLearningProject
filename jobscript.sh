@@ -1,9 +1,9 @@
 #!/bin/sh
 #BSUB -q gpuv100
 #BSUB -gpu "num=1"
-#BSUB -J regu_ac
+#BSUB -J 50_levels
 #BSUB -n 1
-#BSUB -W 1:30
+#BSUB -W 3:00
 #BSUB -R "rusage[mem=32GB]"
 #BSUB -o %J.out
 #BSUB -e %J.err
@@ -20,4 +20,4 @@ unset PYTHONPATH
 cd ~/DeepLearning/DeepLearningProject
 
 echo "Running script"
-python3 training.py --run_name classcode --total_steps 8e6 --num_levels 5000 --num_envs 32
+python3 training.py --run_name 50_levels_BNR --total_steps 4e6 --num_levels 50 --num_envs 32 --value_coef 0.5 --distribution_mode hard

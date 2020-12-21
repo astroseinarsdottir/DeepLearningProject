@@ -24,7 +24,8 @@ class Train:
         grad_eps,
         value_coef,
         entropy_coef,
-        eps
+        eps,
+        distribution_mode
         ):
         # Hyperparameters
         self.run_name = run_name
@@ -40,8 +41,9 @@ class Train:
         self.eps = eps
         
         self.step = 0
+        self.distribution_mode = distribution_mode
         
-        self.env = make_env(num_envs, num_levels=num_levels, env_name="coinrun")
+        self.env = make_env(num_envs, num_levels=num_levels, env_name="coinrun", distribution_mode=distribution_mode)
         self.obs = self.env.reset()
         
         print("Observation space:", self.env.observation_space)
@@ -80,14 +82,7 @@ class Train:
         # Create a folder for this run if there is not already one
         if not os.path.exists(self.run_name):
             os.makedirs(self.run_name)
-
-        
-    def clipped_value_loss(self,b_value, new_value, reward):
-        # Clipped value function objective
-        clipped_val = b_value + (new_value - b_value).clamp( -self.eps, self.eps) 
-        val_loss_1 = torch.pow(new_value - reward, 2)
-        val_loss_2 = torch.pow(clipped_val - reward, 2) 
-        return torch.mean(torch.max(val_loss_1, val_loss_2))
+    
 
     def save_model_info_to_txt(self):
         param_string = "Model informations : \n"
@@ -102,9 +97,12 @@ class Train:
         param_string +="\ngrad_eps: "+str(self.grad_eps)
         param_string +="\nValue coef: "+str(self.value_coef)
         param_string +="\nEntropy coef: "+str(self.entropy_coef)
+        param_string +="\nDistribution mode: "+str(self.distribution_mode)
 
         with open(self.run_name+'/infos.txt', 'w') as f:
             f.write(param_string)
+            print(self.encoder, file=f)
+            print(self.policy, file=f)
 
     def clipped_policy_loss(self,b_log_prob, new_log_prob, b_advantage):
         # Clipped policy objective
@@ -112,7 +110,14 @@ class Train:
         pi_1 = ratio * b_advantage
         pi_2 = ratio.clamp(1.0 - self.eps, 1.0 + self.eps) * b_advantage
         return -torch.min(pi_1, pi_2).mean()
-        
+    
+    def clipped_value_loss(self,b_value, new_value, reward):
+        # Clipped value function objective
+        clipped_val = b_value + (new_value - b_value).clamp( -self.eps, self.eps) 
+        val_loss_1 = torch.pow(new_value - reward, 2)
+        val_loss_2 = torch.pow(clipped_val - reward, 2) 
+        return torch.max(val_loss_1, val_loss_2).mean()
+    
     def evaluate_policy(self):
         # Use policy to collect data for num_steps steps
         self.policy.eval()
@@ -156,7 +161,7 @@ class Train:
         entropy_loss = new_dist.entropy().mean()
 
         # Backpropagate losses
-        loss = pi_loss - self.value_coef * value_loss + self.entropy_coef * entropy_loss
+        loss = pi_loss + self.value_coef * value_loss - self.entropy_coef * entropy_loss
         loss.backward()
 
         # Clip gradients
@@ -221,6 +226,7 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--run_name", type=str, default="Run_"+str(np.random.random_integers(1,1e5)), help="", required=False)
+    parser.add_argument("--distribution_mode", type=str, default="easy", help="", required=False)
     parser.add_argument("--total_steps", type=float, default=8e6, help="", required=False)
     parser.add_argument("--num_envs", type=int, default=32, help="", required=False)
     parser.add_argument("--num_levels", type=int, default=10, help="", required=False)
@@ -244,7 +250,8 @@ def main():
         args.grad_eps,
         args.value_coef,
         args.entropy_coef,
-        args.eps)
+        args.eps,
+        args.distribution_mode)
     
     train_model.run_training()
 

@@ -43,6 +43,7 @@ def make_env(
 	num_levels=100,
 	use_backgrounds=False,
 	normalize_obs=False,
+	distribution_mode="easy",
 	normalize_reward=True,
 	seed=0
 	):
@@ -55,7 +56,7 @@ def make_env(
 		start_level=start_level,
 		num_levels=num_levels,
   		use_generated_assets=False,
-		distribution_mode='hard',
+		distribution_mode=distribution_mode,
 		use_backgrounds=use_backgrounds,
 		restrict_themes=not use_backgrounds,
 		render_mode='rgb_array',

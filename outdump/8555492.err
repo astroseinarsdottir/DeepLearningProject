@@ -1,6 +1,0 @@
-Loaded module: python3/3.8.0
-Loaded module: cuda/8.0
-Loaded module: cudnn/v7.0-prod-cuda8
-/zhome/25/b/144438/.lsbatch/1607626402.8555492.shell: line 20: cd: /zhome/25/b/144438/DeepLearning/DeepLearningProject: No such file or directory
-training.py:15: DeprecationWarning: This function is deprecated. Please call randint(1, 100000.0 + 1) instead
-  parser.add_argument("--run_name", type=str, default="Run_"+str(np.random.random_integers(1,1e5)), help="", required=False)
