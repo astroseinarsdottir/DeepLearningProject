@@ -45,7 +45,8 @@ def make_env(
 	normalize_obs=False,
 	distribution_mode="easy",
 	normalize_reward=True,
-	seed=0
+	seed=0,
+	seed_levels=0
 	):
 	"""Make environment for procgen experiments"""
 	set_global_seeds(seed)
@@ -60,7 +61,7 @@ def make_env(
 		use_backgrounds=use_backgrounds,
 		restrict_themes=not use_backgrounds,
 		render_mode='rgb_array',
-		rand_seed=0
+		rand_seed=seed_levels
 	)
 	env = VecExtractDictObs(env, "rgb")
 	env = VecNormalize(env, ob=normalize_obs, ret=normalize_reward)

@@ -41,10 +41,11 @@ def make_env(
 	env_name='coinrun',
 	start_level=0,
 	num_levels=100,
-	use_backgrounds=False,
+	use_backgrounds=True,
 	normalize_obs=False,
 	normalize_reward=True,
-	seed=0
+	seed=0,
+ 	seed_levels=0
 	):
 	"""Make environment for procgen experiments"""
 	set_global_seeds(seed)
@@ -54,12 +55,12 @@ def make_env(
 		env_name=env_name,
 		start_level=start_level,
 		num_levels=num_levels,
-  		use_generated_assets=False,
+  		use_generated_assets=True,
 		distribution_mode='hard',
 		use_backgrounds=use_backgrounds,
 		restrict_themes=not use_backgrounds,
 		render_mode='rgb_array',
-		rand_seed=199
+  		rand_seed=seed_levels
 	)
 	env = VecExtractDictObs(env, "rgb")
 	env = VecNormalize(env, ob=normalize_obs, ret=normalize_reward)

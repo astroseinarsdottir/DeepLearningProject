@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from model_test import Policy, Flatten, Encoder
+from model import Policy, Flatten, Encoder
 from utils import make_env, Storage, orthogonal_init
 import imageio
 import pandas as pd

@@ -3,7 +3,7 @@
 #BSUB -gpu "num=1"
 #BSUB -J rell
 #BSUB -n 1
-#BSUB -W 00:10
+#BSUB -W 00:30
 #BSUB -R "rusage[mem=32GB]"
 #BSUB -o %J.out
 #BSUB -e %J.err
@@ -20,4 +20,4 @@ unset PYTHONPATH
 cd ~/DeepLearning/DeepLearningProject
 
 echo "Running script"
-python3 validationV2.py --run_name 50000_levels_hard_dv
+python3 validation_multi.py --run_name 500_levels_hard_dvRELU
