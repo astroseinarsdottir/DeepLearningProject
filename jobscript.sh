@@ -1,15 +1,15 @@
 #!/bin/sh
 #BSUB -q gpuv100
 #BSUB -gpu "num=1"
-#BSUB -J 50_levels
+#BSUB -J 50k_
 #BSUB -n 1
-#BSUB -W 6:00
+#BSUB -W 12:00
 #BSUB -R "rusage[mem=32GB]"
 #BSUB -o %J.out
 #BSUB -e %J.err
 
-N_LEVEL=50
-N_STEPS=5e6
+N_LEVEL=500
+N_STEPS=6e6
 
 module load python3/3.8.0
 module load cuda/8.0
@@ -23,7 +23,7 @@ unset PYTHONPATH
 cd ~/DeepLearning/DeepLearningProject
 
 RUN_NAME=$N_LEVEL
-RUN_NAME+=_levels_hard
+RUN_NAME+=_levels_hard_dvRELU
 
 echo $RUN_NAME
 

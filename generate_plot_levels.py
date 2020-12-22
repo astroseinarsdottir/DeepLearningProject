@@ -16,19 +16,25 @@ def smooth(y, box_pts):
     y_smooth = np.convolve(y, box, mode='same')
     return y_smooth
 
-legend_name = "Value Coefficient"
+# Name of the legend title
+legend_name = "N. Levels"
+
+# First element is the name of the folder, second element is the legend you want to give it
+
 names = [
-    ['classcode_hard_o10','0.1'],
-    ['classcode_hard_o25','0.25'],
-    ['classcode_hard_o50','0.5'],
-    ['classcode_hard_o75','0.75'],
-    ['classcode_hard_o100','1']
+    #['50000_levels_hard_dv','50000'],
+    #['50000_levels_hard_dvdpRELU','50000 4'],
+    ['50000_levels_hard','50k baseline'],
+    ['50000_levels_hard_dvRELU','50k deep-value'],
+    ['500_levels_hard_dvRELU','500 deep-value']
 ]
+
 
 df_total = pd.DataFrame()
 
 for name in names:
-    smooth_coeff = 20
+    #The more you smooth, the more it eats the tail of the data
+    smooth_coeff = 10
     df = pd.read_csv(name[0]+"/reward.csv", delimiter=',')
     df[legend_name]  = name[1]
     df["Reward"]  = smooth(df['Average_Reward'],smooth_coeff)
@@ -44,12 +50,12 @@ sns.lineplot(
     data=df_total, x="Step", y="Reward", hue=legend_name, palette="crest"
 )
 
-plt.title("Training on coinrun with various activations")
+plt.title("Training on coinrun")
 #plt.ylabel("Mean Reward")
 #plt.xlabel("Training step (*10e3)")
 
 plt.show()
-plt.savefig("compare.png")
+plt.savefig("compare_levels.png")
 plt.close()
 
 """

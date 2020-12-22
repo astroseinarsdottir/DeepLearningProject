@@ -41,7 +41,7 @@ def make_env(
 	env_name='coinrun',
 	start_level=0,
 	num_levels=100,
-	use_backgrounds=True,
+	use_backgrounds=False,
 	normalize_obs=False,
 	normalize_reward=True,
 	seed=0
@@ -54,12 +54,12 @@ def make_env(
 		env_name=env_name,
 		start_level=start_level,
 		num_levels=num_levels,
-  		use_generated_assets=True,
+  		use_generated_assets=False,
 		distribution_mode='hard',
 		use_backgrounds=use_backgrounds,
 		restrict_themes=not use_backgrounds,
 		render_mode='rgb_array',
-		rand_seed=1997
+		rand_seed=199
 	)
 	env = VecExtractDictObs(env, "rgb")
 	env = VecNormalize(env, ob=normalize_obs, ret=normalize_reward)

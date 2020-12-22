@@ -41,14 +41,12 @@ class Policy(nn.Module):
         # self.value = orthogonal_init(nn.Linear(feature_dim, 1), gain=1.)
         
         self.value = nn.Sequential(
-            nn.BatchNorm1d(num_features=feature_dim),
-            nn.Linear(feature_dim, 64,bias=False), nn.ReLU(),
-            torch.nn.Dropout(p= 0.3, inplace= False),
-            nn.BatchNorm1d(num_features=64),
-            nn.Linear(64, 64,bias=False), nn.ReLU(),
-            torch.nn.Dropout(p= 0.3, inplace= False),
-            nn.Linear(64, 1)
+            nn.Linear(feature_dim, 64,bias=True), nn.Tanh(),
+            nn.Linear(64, 64,bias=True), nn.Tanh(),
+            nn.Linear(64, 1,bias=True),nn.ReLU()
         )
+        
+
         
     def act(self, x):
         with torch.no_grad():

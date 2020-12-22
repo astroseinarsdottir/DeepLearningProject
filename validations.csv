@@ -10,3 +10,11 @@ Run name,Average_Reward
 32envlev500_relu_L2_dropout_bn,38.4375
 32envlev500_relu_L2_DO_BN,43.75
 32envlev500_relu_L2_DO_BN,43.75
+50_levels_hard,60.0
+500_levels_hard,44.0625
+5000_levels_hard,31.25
+50000_levels_hard,29.0625
+50000_levels_hard_dv,90.625
+50000_levels_hard_dv,86.875
+50000_levels_hard_dv,95.73307800292969
+50000_levels_hard_dv,95.73307800292969

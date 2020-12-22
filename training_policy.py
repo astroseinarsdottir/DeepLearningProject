@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from utils_train import make_env, Storage, orthogonal_init, saveArrayAsCSV, saveTensorAsCSV
-from model import Flatten, Encoder, Policy
+from model_policy_mod import Flatten, Encoder, Policy
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt
@@ -61,7 +61,7 @@ class Train:
 
         # Define optimizer
         # these are reasonable values but probably not optimals
-        self.optimizer = torch.optim.Adam(self.policy.parameters(), lr=1e-4, eps=1e-5, weight_decay=0.0001)
+        self.optimizer = torch.optim.Adam(self.policy.parameters(), lr=5e-4, eps=1e-5, weight_decay=0.0001)
 
         # Define temporary storage
         # we use this to collect transitions during each iteration
