@@ -35,13 +35,13 @@ def saveTensorAsCSV(tensor, name,ext):
 end -- Functions added by the group
 """
 
-
+# Make the env for TESTING here :
 def make_env(
 	n_envs=32,
 	env_name='coinrun',
 	start_level=0,
 	num_levels=100,
-	use_backgrounds=True,
+	use_backgrounds=True, # Test with backgrounds
 	normalize_obs=False,
 	normalize_reward=True,
 	seed=0,
@@ -56,7 +56,7 @@ def make_env(
 		start_level=start_level,
 		num_levels=num_levels,
   		use_generated_assets=True,
-		distribution_mode='hard',
+		distribution_mode='hard', # Test with hard levels
 		use_backgrounds=use_backgrounds,
 		restrict_themes=not use_backgrounds,
 		render_mode='rgb_array',

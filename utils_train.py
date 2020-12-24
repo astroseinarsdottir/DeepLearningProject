@@ -36,14 +36,15 @@ end -- Functions added by the group
 """
 
 
+# Make the env for TRAINING here :
 def make_env(
 	n_envs=32,
 	env_name='coinrun',
 	start_level=0,
 	num_levels=100,
-	use_backgrounds=False,
+	use_backgrounds=False, #No Background 
 	normalize_obs=False,
-	distribution_mode="easy",
+	distribution_mode="easy", # Train with easy levels
 	normalize_reward=True,
 	seed=0,
 	seed_levels=0

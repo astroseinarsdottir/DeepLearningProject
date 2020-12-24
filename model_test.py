@@ -4,6 +4,13 @@ import torch.nn.functional as F
 from utils import make_env, Storage, orthogonal_init
 
 
+"""
+TO USE IF WANT TO EVALUATE WITH ANOTHER MODEL ARCHITECTURE, Without altering the model.py
+
+Dont forget to edit the import
+"""
+
+
 class Flatten(nn.Module):
     def forward(self, x):
         return x.view(x.size(0), -1)
