@@ -36,15 +36,18 @@ end -- Functions added by the group
 """
 
 
+# Make the env for TRAINING here :
 def make_env(
 	n_envs=32,
 	env_name='coinrun',
 	start_level=0,
 	num_levels=100,
-	use_backgrounds=False,
+	use_backgrounds=False, #No Background 
 	normalize_obs=False,
+	distribution_mode="easy", # Train with easy levels
 	normalize_reward=True,
-	seed=0
+	seed=0,
+	seed_levels=0
 	):
 	"""Make environment for procgen experiments"""
 	set_global_seeds(seed)
@@ -55,11 +58,11 @@ def make_env(
 		start_level=start_level,
 		num_levels=num_levels,
   		use_generated_assets=False,
-		distribution_mode='hard',
+		distribution_mode=distribution_mode,
 		use_backgrounds=use_backgrounds,
 		restrict_themes=not use_backgrounds,
 		render_mode='rgb_array',
-		rand_seed=0
+		rand_seed=seed_levels
 	)
 	env = VecExtractDictObs(env, "rgb")
 	env = VecNormalize(env, ob=normalize_obs, ret=normalize_reward)

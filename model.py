@@ -38,8 +38,18 @@ class Policy(nn.Module):
         self.encoder = encoder
         self.policy = orthogonal_init(
             nn.Linear(feature_dim, num_actions), gain=.01)
-        self.value = orthogonal_init(nn.Linear(feature_dim, 1), gain=1.)
-
+        # self.value = orthogonal_init(nn.Linear(feature_dim, 1), gain=1.)
+        
+        self.value = nn.Sequential(
+            nn.BatchNorm1d(num_features=feature_dim),
+            nn.Linear(feature_dim, 64,bias=False), nn.ReLU(),
+            torch.nn.Dropout(p= 0.3, inplace= False),
+            nn.BatchNorm1d(num_features=64),
+            nn.Linear(64, 64,bias=False), nn.ReLU(),
+            torch.nn.Dropout(p= 0.3, inplace= False),
+            nn.Linear(64, 1)
+        )
+        
     def act(self, x):
         with torch.no_grad():
             x = x.cuda().contiguous()

@@ -1,12 +1,15 @@
 #!/bin/sh
 #BSUB -q gpuv100
 #BSUB -gpu "num=1"
-#BSUB -J regu_ac
+#BSUB -J train
 #BSUB -n 1
-#BSUB -W 1:30
+#BSUB -W 12:00
 #BSUB -R "rusage[mem=32GB]"
 #BSUB -o %J.out
 #BSUB -e %J.err
+
+N_LEVEL=500
+N_STEPS=6e6
 
 module load python3/3.8.0
 module load cuda/8.0
@@ -19,5 +22,10 @@ unset PYTHONPATH
 
 cd ~/DeepLearning/DeepLearningProject
 
+RUN_NAME=$N_LEVEL
+RUN_NAME+=_levels_hard_dvRELU
+
+echo $RUN_NAME
+
 echo "Running script"
-python3 training.py --run_name classcode --total_steps 8e6 --num_levels 5000 --num_envs 32
+python3 training.py --run_name $RUN_NAME --total_steps $N_STEPS --num_levels $N_LEVEL --num_envs 32 --value_coef 0.5 --distribution_mode hard

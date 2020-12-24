@@ -16,31 +16,46 @@ def smooth(y, box_pts):
     y_smooth = np.convolve(y, box, mode='same')
     return y_smooth
 
-df = pd.read_csv("32envlev500_relu_L2_dropout_bn/reward.csv", delimiter=',')
-df2 = pd.read_csv("32envlev500_tanh/reward.csv", delimiter=',')
+# Name of the legend title
+legend_name = "N. Levels"
 
-df["Activation"]  = "ReLU + L2 + Dropout + BatchNorm"
-df["Reward"]  = smooth(df['Average_Reward'],15)
-df.drop(df.tail(15).index,inplace=True)
-df2["Activation"]  = "Tanh"
-df2["Reward"]  = smooth(df2['Average_Reward'],15)
-df2.drop(df2.tail(250).index,inplace=True)
-total_df = df.append(df2)
+# First element is the name of the folder, second element is the legend you want to give it
+
+names = [
+    #['50000_levels_hard_dv','50000'],
+    #['50000_levels_hard_dvdpRELU','50000 4'],
+    ['50000_levels_hard','50k baseline'],
+    ['50000_levels_hard_dvRELU','50k deep-value'],
+    ['500_levels_hard_dvRELU','500 deep-value']
+]
 
 
-print(total_df.info())
+df_total = pd.DataFrame()
+
+for name in names:
+    #The more you smooth, the more it eats the tail of the data
+    smooth_coeff = 10
+    df = pd.read_csv(name[0]+"/reward.csv", delimiter=',')
+    df[legend_name]  = name[1]
+    df["Reward"]  = smooth(df['Average_Reward'],smooth_coeff)
+    df.drop(df.tail(smooth_coeff).index,inplace=True)
+    if df_total.empty:
+        df_total = df
+    else:
+        df_total = df_total.append(df)
+    
 fig_dims = (10, 6)
 fig, ax = plt.subplots(figsize=fig_dims)
 sns.lineplot(
-    data=total_df, x="Step", y="Reward", hue="Activation", palette="Blues"
+    data=df_total, x="Step", y="Reward", hue=legend_name, palette="crest"
 )
 
-plt.title("Training on coinrun with various activations")
+plt.title("Training on coinrun")
 #plt.ylabel("Mean Reward")
 #plt.xlabel("Training step (*10e3)")
 
 plt.show()
-plt.savefig("output_tanh_vs_relu_2.png")
+plt.savefig("compare_levels.png")
 plt.close()
 
 """
