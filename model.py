@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from utils import make_env, Storage, orthogonal_init
+from utils_train import make_env, Storage, orthogonal_init
 
 
 class Flatten(nn.Module):

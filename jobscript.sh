@@ -28,4 +28,4 @@ RUN_NAME+=_levels_hard_dvRELU
 echo $RUN_NAME
 
 echo "Running script"
-python3 training.py --run_name $RUN_NAME --total_steps $N_STEPS --num_levels $N_LEVEL --num_envs 32 --value_coef 0.5 --distribution_mode hard
+python3 training.py --run_name $RUN_NAME --total_steps $N_STEPS --num_levels $N_LEVEL --distribution_mode hard
