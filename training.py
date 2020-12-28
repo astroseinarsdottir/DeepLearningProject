@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from utils_train import make_env, Storage, orthogonal_init, saveArrayAsCSV, saveTensorAsCSV
-from model import Flatten, Encoder, Policy
+from models.model_deep_value import Flatten, Encoder, Policy
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt

@@ -1,0 +1,26 @@
+Run name,Average_Reward
+5000_baseline_21,16.25
+5000_baseline_21,9.0625
+5000_baseline_21,10.9375
+5000_baseline_21,12.8125
+5000_baseline_21,12.5
+5000_tanh_21,33.125
+5000_tanh_21,34.6875
+5000_tanh_21,27.8125
+5000_tanh_21,35.0
+5000_tanh_21,33.125
+5000_model_relu_reg_true_21,14.6875
+5000_model_relu_reg_true_21,11.875
+5000_model_relu_reg_true_21,10.0
+5000_model_relu_reg_true_21,15.3125
+5000_model_relu_reg_true_21,12.1875
+5000_deep_value_tanh_21,35.3125
+5000_deep_value_tanh_21,27.8125
+5000_deep_value_tanh_21,23.4375
+5000_deep_value_tanh_21,30.625
+5000_deep_value_tanh_21,27.1875
+5000_model_deep_value_21,45.0
+5000_model_deep_value_21,38.75
+5000_model_deep_value_21,33.125
+5000_model_deep_value_21,42.491302490234375
+5000_model_deep_value_21,38.125

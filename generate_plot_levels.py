@@ -17,18 +17,19 @@ def smooth(y, box_pts):
     return y_smooth
 
 # Name of the legend title
-legend_name = "N. Levels"
+legend_name = "Model"
 
 # First element is the name of the folder, second element is the legend you want to give it
 
 names = [
     #['50000_levels_hard_dv','50000'],
     #['50000_levels_hard_dvdpRELU','50000 4'],
-    ['50000_levels_hard','50k baseline'],
-    ['50000_levels_hard_dvRELU','50k deep-value'],
-    ['500_levels_hard_dvRELU','500 deep-value']
+    ['5000_model_deep_value_21','Dv + ReLUReg'],
+    ['50000_model_deep_value_21','Dv + ReLUReg 50k'],
+    ['50000_model_deep_value_ga_91','Dv + ReLUReg ga']
 ]
 
+markers= ["^","*","s","p","d"]
 
 df_total = pd.DataFrame()
 
@@ -44,18 +45,31 @@ for name in names:
     else:
         df_total = df_total.append(df)
     
-fig_dims = (10, 6)
-fig, ax = plt.subplots(figsize=fig_dims)
-sns.lineplot(
-    data=df_total, x="Step", y="Reward", hue=legend_name, palette="crest"
+# EDIT: I Needed to ad the fig
+fig, ax1 = plt.subplots(1,1)
+g = sns.lineplot(
+    data=df_total, x="Step", y="Reward", hue=legend_name, style=legend_name, linewidth=3, palette="Set2", markers=True, dashes=False, markevery=[-1],markersize=15
 )
+# EDIT: 
+# Removed 'ax' from T.W.'s answer here aswell:
+box = g.get_position()
+g.set_position([box.x0*1.05, box.y0*1.5, box.width * 0.75, box.height]) # resize position
 
-plt.title("Training on coinrun")
-#plt.ylabel("Mean Reward")
-#plt.xlabel("Training step (*10e3)")
+# Put a legend to the right side
+g.legend(loc='center right', bbox_to_anchor=(1.5, 0.5), ncol=1)
+
+g.tick_params(labelsize=20)
+# Turn off tick labels
+
+
+#plt.title("Training on coinrun")
+g.set_ylabel("Reward",fontsize=20)
+g.set_xlabel("Steps",fontsize=20)
+plt.xticks([0,2e6, 4e6, 6e6], ('0','2M', '4M', '6M'))
+# Plot using seaborn
 
 plt.show()
-plt.savefig("compare_levels.png")
+plt.savefig("compare_levels_n.png")
 plt.close()
 
 """

@@ -55,7 +55,7 @@ def make_env(
 		env_name=env_name,
 		start_level=start_level,
 		num_levels=num_levels,
-  		use_generated_assets=True,
+  		use_generated_assets=False,
 		distribution_mode='hard', # Test with hard levels
 		use_backgrounds=use_backgrounds,
 		restrict_themes=not use_backgrounds,

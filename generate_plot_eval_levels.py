@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd 
 from scipy.interpolate import UnivariateSpline
 import matplotlib.pyplot as plt
+import matplotlib
 from numpy import genfromtxt
 sns.set_theme()
 from matplotlib.colors import LogNorm
@@ -21,39 +22,34 @@ legend_name = "N. Levels"
 
 # First element is the name of the folder, second element is the legend you want to give it
 
-names = [
-    ['easy_dvReLU_12/50_levels_easy_dvRELU','50'],
-    ['easy_dvReLU_12/500_levels_easy_dvRELU','500'],
-    ['easy_dvReLU_12/5000_levels_easy_dvRELU','5000'],
-    ['easy_dvReLU_12/50000_levels_easy_dvRELU','50000'],
-]
 
+df = pd.read_csv("plot_models_eval.csv", delimiter=',')
 
-df_total = pd.DataFrame()
-
-for name in names:
-    #The more you smooth, the more it eats the tail of the data
-    smooth_coeff = 10
-    df = pd.read_csv(name[0]+"/reward.csv", delimiter=',')
-    df[legend_name]  = name[1]
-    df["Reward"]  = smooth(df['Average_Reward'],smooth_coeff)
-    df.drop(df.tail(smooth_coeff).index,inplace=True)
-    if df_total.empty:
-        df_total = df
-    else:
-        df_total = df_total.append(df)
     
 fig_dims = (7, 5)
 fig, ax = plt.subplots(figsize=fig_dims)
-sns.lineplot(
-    data=df_total, x="Step", y="Reward", hue=legend_name, palette="crest"
+#g= sns.lineplot(
+#    data=df, x="Id model", y="Average_Reward", marker="o"
+#)
+g= sns.barplot(
+    data=df, x="Average_Reward", y="Run name",capsize=.2,palette="Set2"
 )
 
-#plt.ylabel("Mean Reward")
-plt.xlabel("Training steps")
+box = g.get_position()
+g.set_position([box.x0*2, box.y0*1.5, box.width * 0.75, box.height]) # resize position
+g.tick_params(labelsize=20)
 
+#plt.ylabel("Mean Reward")
+#plt.xlabel("Training step (*10e3)")
+
+#g.set_xscale('log')
+#g.set_xticks(["BL","BL tanh", "BL ReluReg"])
+#g.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+plt.xlabel("Mean Reward")
+plt.ylabel("")
+ax.set_yticklabels(["Baseline (BL)","BL + Tanh","BL + ReLUReg","Dv + Tanh","Dv + ReLUReg"],fontsize=15)
 plt.show()
-plt.savefig("compare_levels_dv.png")
+plt.savefig("compare_eval.png")
 plt.close()
 
 """
