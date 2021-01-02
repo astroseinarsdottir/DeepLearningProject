@@ -5,29 +5,26 @@ from utils_train import make_env, Storage, orthogonal_init
 
 
 class ResidualBlock(nn.Module):
-    def __init__(self, channels):
-        super().__init__()
-        self.channels = channels
-        self.layers = nn.Sequential(nn.ReLU(),
-
-                                    nn.Conv2d(in_channels=channels, out_channels=channels,
-                                              kernel_size=3, stride=1),
-                                    nn.Dropout(),
-                                    # Potentially add batch norm
-
-                                    nn.ReLU(),
-
-                                    nn.Conv2d(in_channels=channels, out_channels=channels,
-                                              kernel_size=3, stride=1),
-                                    nn.Dropout(),
-                                    # Potentially add batch norm
-                                    )
+    def __init__(self, ni):
+        super(Block, self).__init__()
+        self.conv1 = nn.Conv2d(ni, ni, 1)
+        self.conv2 = nn.Conv2d(ni, ni, 3, 1, 1)
+        self.classifier = nn.Linear(ni*24*24, 751)
+        self.batch_norm = nn.BatchNorm2d(ni)
 
     def forward(self, x):
         residual = x
-        x = self.layers(x)
-        x += residual
-        return x
+        out = nn.ReLU(x)
+        out = self.conv1(out)
+        out = self.batch_norm(out)
+        out = nn.ReLU(out)
+        out = self.conv2(out)
+        out = self.batch_norm(out)
+
+        out += residual
+
+        out = out.view(out.size(0), -1)
+        return out
 
     @property
     def should_apply_shortcut(self):
@@ -48,22 +45,22 @@ class Encoder(nn.Module):
             nn.Conv2d(in_channels=in_channels, out_channels=16,
                       kernel_size=3, stride=1),
             nn.MaxPool2d(stride=2, kernel_size=3),
-            ResidualBlock(channels=16),
-            ResidualBlock(channels=16),
+            ResidualBlock(16),
+            ResidualBlock(16),
 
             # Second iteration of sequence, 32
             nn.Conv2d(in_channels=16, out_channels=32,
                       kernel_size=3, stride=1),
             nn.MaxPool2d(stride=2, kernel_size=3),
-            ResidualBlock(channels=32),
-            ResidualBlock(channels=32),
+            ResidualBlock(32),
+            ResidualBlock(32),
 
             # Third iteration of sequence, 32
             nn.Conv2d(in_channels=32, out_channels=32,
                       kernel_size=3, stride=1),
             nn.MaxPool2d(stride=2, kernel_size=3),
-            ResidualBlock(channels=32),
-            ResidualBlock(channels=32),
+            ResidualBlock(32),
+            ResidualBlock(32),
 
             Flatten(),
             nn.ReLU(),
