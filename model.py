@@ -23,7 +23,7 @@ class Encoder(nn.Module):
                       kernel_size=3, stride=1), nn.ReLU(),
             nn.BatchNorm2d(64),
             Flatten(),
-            torch.nn.Dropout(p= 0.3, inplace= False),
+            torch.nn.Dropout(p=0.3, inplace=False),
             nn.Linear(in_features=1024, out_features=feature_dim), nn.ReLU()
         )
         self.apply(orthogonal_init)
@@ -39,17 +39,17 @@ class Policy(nn.Module):
         self.policy = orthogonal_init(
             nn.Linear(feature_dim, num_actions), gain=.01)
         # self.value = orthogonal_init(nn.Linear(feature_dim, 1), gain=1.)
-        
+
         self.value = nn.Sequential(
             nn.BatchNorm1d(num_features=feature_dim),
-            nn.Linear(feature_dim, 64,bias=False), nn.ReLU(),
-            torch.nn.Dropout(p= 0.3, inplace= False),
+            nn.Linear(feature_dim, 64, bias=False), nn.ReLU(),
+            torch.nn.Dropout(p=0.3, inplace=False),
             nn.BatchNorm1d(num_features=64),
-            nn.Linear(64, 64,bias=False), nn.ReLU(),
-            torch.nn.Dropout(p= 0.3, inplace= False),
+            nn.Linear(64, 64, bias=False), nn.ReLU(),
+            torch.nn.Dropout(p=0.3, inplace=False),
             nn.Linear(64, 1)
         )
-        
+
     def act(self, x):
         with torch.no_grad():
             x = x.cuda().contiguous()

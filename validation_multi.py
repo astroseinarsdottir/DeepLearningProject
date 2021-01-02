@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from model import Policy, Flatten, Encoder
+from model_impala import Policy, Flatten, Encoder
 from utils_test import make_env, Storage, orthogonal_init
 import imageio
 import pandas as pd
@@ -9,7 +9,8 @@ import os
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--run_name", type=str, default="", help="", required=False)
+parser.add_argument("--run_name", type=str, default="",
+                    help="", required=False)
 args = parser.parse_args()
 run_name = args.run_name
 
@@ -26,12 +27,12 @@ value_coef = .5
 entropy_coef = .01
 
 
-grid_param = [[1,1]]
+grid_param = [[1, 1]]
 
 # Make evaluation environment
 
-seeds = [10,20,30,40,50]
-    
+seeds = [10, 20, 30, 40, 50]
+
 eval_env = make_env(num_envs, start_level=0, num_levels=0)
 obs = eval_env.reset()
 
@@ -49,7 +50,8 @@ policy.eval()
 for seed in seeds:
     frames = []
     total_reward = []
-    eval_env = make_env(num_envs, start_level=0, num_levels=0,seed_levels=seed)
+    eval_env = make_env(num_envs, start_level=0,
+                        num_levels=0, seed_levels=seed)
     obs = eval_env.reset()
 
     for _ in range(1024):
@@ -62,7 +64,7 @@ for seed in seeds:
 
         # Render environment and store
         #frame = (torch.Tensor(eval_env.render(mode='rgb_array'))*255.).byte()
-        #frames.append(frame)
+        # frames.append(frame)
 
     # Calculate average return
     stacked_total_reward = torch.stack(total_reward).sum(0)
@@ -72,18 +74,13 @@ for seed in seeds:
     #frames = torch.stack(frames)
     #imageio.mimsave("videos/"+run_name+'.mp4', frames, fps=25)
 
-
     validation_file_name = "validations_multi_generated_assets.csv"
-    df_current = pd.DataFrame({'Run name': run_name, 'Average_Reward': total_reward.item()}, index=[0])
+    df_current = pd.DataFrame(
+        {'Run name': run_name, 'Average_Reward': total_reward.item()}, index=[0])
 
-        
     if not os.path.exists(validation_file_name):
         df_current.to_csv(validation_file_name, index=False)
     else:
         df_loaded = pd.read_csv(validation_file_name, delimiter=',')
-        df_save = df_loaded.append(df_current, ignore_index = True) 
+        df_save = df_loaded.append(df_current, ignore_index=True)
         df_save.to_csv(validation_file_name, index=False)
-
-
-    
-
