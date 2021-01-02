@@ -6,7 +6,7 @@ from utils_train import make_env, Storage, orthogonal_init
 
 class ResidualBlock(nn.Module):
     def __init__(self, ni):
-        super(Block, self).__init__()
+        super(ResidualBlock, self).__init__()
         self.conv1 = nn.Conv2d(ni, ni, 1)
         self.conv2 = nn.Conv2d(ni, ni, 3, 1, 1)
         self.classifier = nn.Linear(ni*24*24, 751)
@@ -14,10 +14,10 @@ class ResidualBlock(nn.Module):
 
     def forward(self, x):
         residual = x
-        out = nn.ReLU(x)
+        out = F.ReLU(x)
         out = self.conv1(out)
         out = self.batch_norm(out)
-        out = nn.ReLU(out)
+        out = F.ReLU(out)
         out = self.conv2(out)
         out = self.batch_norm(out)
 
