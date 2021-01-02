@@ -14,10 +14,10 @@ class ResidualBlock(nn.Module):
 
     def forward(self, x):
         residual = x
-        out = F.ReLU(x)
+        out = F.relu(x)
         out = self.conv1(out)
         out = self.batch_norm(out)
-        out = F.ReLU(out)
+        out = F.relu(out)
         out = self.conv2(out)
         out = self.batch_norm(out)
 
