@@ -48,22 +48,22 @@ class Encoder(nn.Module):
             nn.Conv2d(in_channels=in_channels, out_channels=16,
                       kernel_size=3, stride=1),
             nn.MaxPool2d(stride=2, kernel_size=3),
-            ResidualBlock(in_channels=16, out_channels=16),
-            ResidualBlock(in_channels=16, out_channels=16),
+            ResidualBlock(channels=16),
+            ResidualBlock(channels=16),
 
             # Second iteration of sequence, 32
             nn.Conv2d(in_channels=16, out_channels=32,
                       kernel_size=3, stride=1),
             nn.MaxPool2d(stride=2, kernel_size=3),
-            ResidualBlock(in_channels=32, out_channels=32),
-            ResidualBlock(in_channels=32, out_channels=32),
+            ResidualBlock(channels=32),
+            ResidualBlock(channels=32),
 
             # Third iteration of sequence, 32
             nn.Conv2d(in_channels=32, out_channels=32,
                       kernel_size=3, stride=1),
             nn.MaxPool2d(stride=2, kernel_size=3),
-            ResidualBlock(in_channels=32, out_channels=32),
-            ResidualBlock(in_channels=32, out_channels=32),
+            ResidualBlock(channels=32),
+            ResidualBlock(channels=32),
 
             Flatten(),
             nn.ReLU(),
