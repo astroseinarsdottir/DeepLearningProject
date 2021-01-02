@@ -5,19 +5,19 @@ from utils_train import make_env, Storage, orthogonal_init
 
 
 class ResidualBlock(nn.Module):
-    def __init__(self, in_channels, out_channels):
+    def __init__(self, channels):
         super().__init__()
-        self.in_channels, self.out_channels = in_channels, out_channels
+        self.channels = channels
         self.layers = nn.Sequential(nn.ReLU(),
 
-                                    nn.Conv2d(in_channels=in_channels, out_channels=out_channels,
+                                    nn.Conv2d(in_channels=channels, out_channels=channels,
                                               kernel_size=3, stride=1),
                                     nn.Dropout(),
                                     # Potentially add batch norm
 
                                     nn.ReLU(),
 
-                                    nn.Conv2d(in_channels=in_channels, out_channels=out_channels,
+                                    nn.Conv2d(in_channels=channels, out_channels=channels,
                                               kernel_size=3, stride=1),
                                     nn.Dropout(),
                                     # Potentially add batch norm
@@ -52,7 +52,7 @@ class Encoder(nn.Module):
             ResidualBlock(in_channels=16, out_channels=16),
 
             # Second iteration of sequence, 32
-            nn.Conv2d(in_channels=32, out_channels=32,
+            nn.Conv2d(in_channels=16, out_channels=32,
                       kernel_size=3, stride=1),
             nn.MaxPool2d(stride=2, kernel_size=3),
             ResidualBlock(in_channels=32, out_channels=32),
