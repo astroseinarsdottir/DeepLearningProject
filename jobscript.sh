@@ -23,9 +23,10 @@ unset PYTHONPATH
 
 cd ~/DeepLearning/DeepLearningProject
 
-RUN_NAME=Impala
+RUN_NAME=Impala_
+RUN_NAME+=$N_STEPS
 
 echo $RUN_NAME
 
 echo "Running script"
-python3 training.py --run_name $RUN_NAME --total_steps $N_STEPS --num_levels $N_LEVEL --distribution_mode hard --num_steps 256 --num_envs 32
+python3 training.py --run_name $RUN_NAME --total_steps $N_STEPS --num_levels $N_LEVEL --distribution_mode hard --num_steps 256 --seed_levels $SEED --num_envs 32

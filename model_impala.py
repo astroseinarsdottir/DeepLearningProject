@@ -5,30 +5,23 @@ from utils_train import make_env, Storage, orthogonal_init
 
 
 class ResidualBlock(nn.Module):
-    def __init__(self, ni):
+    def __init__(self, ch):
         super(ResidualBlock, self).__init__()
-        self.conv1 = nn.Conv2d(ni, ni, 1)
-        self.conv2 = nn.Conv2d(ni, ni, 3, 1, 1)
-        self.classifier = nn.Linear(ni*24*24, 751)
-        self.batch_norm = nn.BatchNorm2d(ni)
+        self.conv1 = nn.Conv2d(ch, ch, kernel_size=3, stride=1, padding=1)
+        self.conv2 = nn.Conv2d(ch, ch, kernel_size=3, stride=1, padding=1)
+        self.batch_norm = nn.BatchNorm2d(ch)
 
     def forward(self, x):
         residual = x
-        out = F.relu(x)
-        out = self.conv1(out)
+        out = F.relu(x, inplace=True)
+        out = self.conv1(x)
         out = self.batch_norm(out)
-        out = F.relu(out)
+        out = F.relu(out, inplace=True)
         out = self.conv2(out)
         out = self.batch_norm(out)
-
-        out += residual
-
-        out = out.view(out.size(0), -1)
+        out = out + residual
+        # out = out.view(x.size(0), -1)
         return out
-
-    @property
-    def should_apply_shortcut(self):
-        return self.in_channels != self.out_channels
 
 
 class Flatten(nn.Module):
@@ -63,8 +56,8 @@ class Encoder(nn.Module):
             ResidualBlock(32),
 
             Flatten(),
-            nn.ReLU(),
-            nn.Linear(in_features=1024, out_features=feature_dim)
+            nn.ReLU(inplace=True),
+            nn.Linear(in_features=800, out_features=feature_dim)
         )
 
         self.apply(orthogonal_init)
@@ -84,10 +77,7 @@ class Policy(nn.Module):
 
     def act(self, x):
         with torch.no_grad():
-            if not torch.cuda.is_available():
-                x = x.contiguous()
-            else:
-                x = x.cuda().contiguous()
+            x = x.cuda().contiguous()
             dist, value = self.forward(x)
             action = dist.sample()
             log_prob = dist.log_prob(action)

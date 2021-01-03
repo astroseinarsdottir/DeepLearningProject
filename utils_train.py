@@ -130,12 +130,12 @@ class Storage():
         iterator = BatchSampler(SubsetRandomSampler(
             range(self.num_steps*self.num_envs)), batch_size, drop_last=True)
         for indices in iterator:
-            obs = self.obs[:-1].reshape(-1, *self.obs_shape)[indices]
-            action = self.action.reshape(-1)[indices]
-            log_prob = self.log_prob.reshape(-1)[indices]
-            value = self.value[:-1].reshape(-1)[indices]
-            returns = self.returns.reshape(-1)[indices]
-            advantage = self.advantage.reshape(-1)[indices]
+            obs = self.obs[:-1].reshape(-1, *self.obs_shape)[indices].cuda()
+            action = self.action.reshape(-1)[indices].cuda()
+            log_prob = self.log_prob.reshape(-1)[indices].cuda()
+            value = self.value[:-1].reshape(-1)[indices].cuda()
+            returns = self.returns.reshape(-1)[indices].cuda()
+            advantage = self.advantage.reshape(-1)[indices].cuda()
             yield obs, action, log_prob, value, returns, advantage
 
     def get_full_reward(self, normalized_reward=True):

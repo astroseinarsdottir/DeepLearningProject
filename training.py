@@ -60,7 +60,7 @@ class Train:
         # Define network
         self.encoder = Encoder(self.in_channels, self.n_input)
         self.policy = Policy(self.encoder, self.n_input, self.num_actions)
-        self.policy.to('cpu')
+        self.policy.cuda()
 
         # Define optimizer
         # these are reasonable values but probably not optimals
