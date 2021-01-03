@@ -12,6 +12,8 @@ class Flatten(nn.Module):
 class Encoder(nn.Module):
     def __init__(self, in_channels, feature_dim):
         super().__init__()
+
+        print(in_channels.shape())
         self.layers = nn.Sequential(
             nn.Conv2d(in_channels=in_channels, out_channels=32,
                       kernel_size=8, stride=4), nn.ReLU(),

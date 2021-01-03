@@ -84,7 +84,10 @@ class Policy(nn.Module):
 
     def act(self, x):
         with torch.no_grad():
-            x = x.cuda().contiguous()
+            if not torch.cuda.is_available():
+                x = x.contiguous()
+            else:
+                x = x.cuda().contiguous()
             dist, value = self.forward(x)
             action = dist.sample()
             log_prob = dist.log_prob(action)
