@@ -22,7 +22,7 @@ unset PYTHONPATH
 
 cd ~/DeepLearning/DeepLearningProject
 
-RUN_NAME=Impala_
+RUN_NAME=Impala_dv_
 RUN_NAME+=$N_STEPS
 
 echo $RUN_NAME

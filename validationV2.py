@@ -43,7 +43,7 @@ in_channels = 3
 encoder = Encoder(in_channels, n_input)
 policy = Policy(encoder, n_input, num_actions)
 policy.cuda()
-policy.load_state_dict(torch.load(run_name+'/checkpoint.pt'))
+policy.load_state_dict(torch.load(run_name+'/checkpoint.pt'), strict=False)
 policy.eval()
 
 for _ in range(1024):

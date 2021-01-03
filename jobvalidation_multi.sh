@@ -20,4 +20,4 @@ unset PYTHONPATH
 cd ~/DeepLearning/DeepLearningProject
 
 echo "Running script"
-python3 validation_multi.py --run_name 500_levels_hard_dvRELU
+python3 validation_multi.py --run_name Impala_6e6
