@@ -15,10 +15,10 @@ class ResidualBlock(nn.Module):
         residual = x
         out = F.relu(x, inplace=True)
         out = self.conv1(x)
-        out = self.batch_norm(out)
+        #out = self.batch_norm(out)
         out = F.relu(out, inplace=True)
         out = self.conv2(out)
-        out = self.batch_norm(out)
+        #out = self.batch_norm(out)
         out = out + residual
         # out = out.view(x.size(0), -1)
         return out
