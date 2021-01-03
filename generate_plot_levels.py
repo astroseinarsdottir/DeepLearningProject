@@ -17,16 +17,16 @@ def smooth(y, box_pts):
     return y_smooth
 
 # Name of the legend title
-legend_name = "Model"
+legend_name = "Episode sixe"
 
 # First element is the name of the folder, second element is the legend you want to give it
 
 names = [
     #['50000_levels_hard_dv','50000'],
     #['50000_levels_hard_dvdpRELU','50000 4'],
-    ['5000_model_deep_value_21','Dv + ReLUReg'],
-    ['50000_model_deep_value_21','Dv + ReLUReg 50k'],
-    ['50000_model_deep_value_ga_91','Dv + ReLUReg ga']
+    ['50000_model_deep_value_autoeval_91','256'],
+    ['50000_model_deep_value_autoeval_512_91','512'],
+    ['50000_model_deep_value_autoeval_128_91','128']
 ]
 
 markers= ["^","*","s","p","d"]
@@ -36,7 +36,7 @@ df_total = pd.DataFrame()
 for name in names:
     #The more you smooth, the more it eats the tail of the data
     smooth_coeff = 10
-    df = pd.read_csv(name[0]+"/reward.csv", delimiter=',')
+    df = pd.read_csv(name[0]+"/validations_model.csv", delimiter=',')
     df[legend_name]  = name[1]
     df["Reward"]  = smooth(df['Average_Reward'],smooth_coeff)
     df.drop(df.tail(smooth_coeff).index,inplace=True)
@@ -53,23 +53,23 @@ g = sns.lineplot(
 # EDIT: 
 # Removed 'ax' from T.W.'s answer here aswell:
 box = g.get_position()
-g.set_position([box.x0*1.05, box.y0*1.5, box.width * 0.75, box.height]) # resize position
+g.set_position([box.x0*1.05, box.y0*1.5, box.width * 0.85, box.height]) # resize position
 
 # Put a legend to the right side
-g.legend(loc='center right', bbox_to_anchor=(1.5, 0.5), ncol=1)
+g.legend(loc='center right', bbox_to_anchor=(1.27, 0.5), ncol=1)
 
 g.tick_params(labelsize=20)
 # Turn off tick labels
 
 
 #plt.title("Training on coinrun")
-g.set_ylabel("Reward",fontsize=20)
+g.set_ylabel("Reward on evaluation",fontsize=20)
 g.set_xlabel("Steps",fontsize=20)
-plt.xticks([0,2e6, 4e6, 6e6], ('0','2M', '4M', '6M'))
+plt.xticks([0,5e6, 10e6], ('0','5M', '10M'))
 # Plot using seaborn
 
 plt.show()
-plt.savefig("compare_levels_n.png")
+plt.savefig("compare_ep_step.png")
 plt.close()
 
 """

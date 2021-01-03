@@ -20,4 +20,4 @@ unset PYTHONPATH
 cd ~/DeepLearning/DeepLearningProject
 
 echo "Running script"
-python3 validation_multi.py --run_name 5000_model_relu_reg_true_21
+python3 validation_multi.py --run_name 500000_model_deep_value_128_91

@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd 
 from scipy.interpolate import UnivariateSpline
 import matplotlib.pyplot as plt
-import matplotlib
 from numpy import genfromtxt
 sns.set_theme()
 from matplotlib.colors import LogNorm
@@ -18,39 +17,52 @@ def smooth(y, box_pts):
     return y_smooth
 
 # Name of the legend title
-legend_name = "N. Levels"
+legend_name = "N. levels"
 
 # First element is the name of the folder, second element is the legend you want to give it
 
+name = '500000_model_deep_value_autoeval_91'
+markers= ["^","*","s","p","d"]
 
-df = pd.read_csv("plot_n_level.csv", delimiter=',')
+df_total = pd.DataFrame()
 
+    #The more you smooth, the more it eats the tail of the data
+smooth_coeff = 10
+
+df = pd.read_csv(name+"/validations_model.csv", delimiter=',')
+#df[legend_name]  = name[1]
+df["Reward"]  = smooth(df['Average_Reward'],smooth_coeff)
+df.drop(df.tail(smooth_coeff).index,inplace=True)
+if df_total.empty:
+    df_total = df
+else:
+    df_total = df_total.append(df)
     
-fig_dims = (7, 5)
-fig, ax = plt.subplots(figsize=fig_dims)
-#g= sns.lineplot(
-#    data=df, x="Id model", y="Average_Reward", marker="o"
-#)
-g= sns.barplot(
-    data=df, x="Average_Reward", y="Run name",capsize=.2,palette="crest"
+# EDIT: I Needed to ad the fig
+fig, ax1 = plt.subplots(1,1)
+g = sns.lineplot(
+    data=df_total, x="Step", y="Reward", linewidth=3, palette="crest", markers=True, dashes=False, markevery=[-1],markersize=15
 )
-
+# EDIT: 
+# Removed 'ax' from T.W.'s answer here aswell:
 box = g.get_position()
-g.set_position([box.x0*2.5, box.y0*1.5, box.width * 0.8, box.height*0.7]) # resize position
+g.set_position([box.x0*1.05, box.y0*1.5, box.width * 0.85, box.height]) # resize position
+
+# Put a legend to the right side
+g.legend(loc='center right', bbox_to_anchor=(1.27, 0.5), ncol=1)
+
 g.tick_params(labelsize=20)
+# Turn off tick labels
 
-#plt.ylabel("Mean Reward")
-#plt.xlabel("Training step (*10e3)")
 
-#g.set_xscale('log')
-#g.set_xticks(["BL","BL tanh", "BL ReluReg"])
-#g.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
-plt.xlabel("Mean Reward")
-plt.ylabel("")
-ax.set_yticklabels(["50 Levels","500 Levels","5000 Levels","50000 Levels"],fontsize=15)
+#plt.title("Training on coinrun")
+g.set_ylabel("Reward on validation",fontsize=20)
+g.set_xlabel("Steps",fontsize=20)
+plt.xticks([0,5e6, 10e6], ('0','5M', '10M'))
+# Plot using seaborn
 
 plt.show()
-plt.savefig("compare_eval_noga.png")
+plt.savefig("validationscore.png")
 plt.close()
 
 """

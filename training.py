@@ -10,6 +10,8 @@ import os
 import pandas as pd
 import seaborn as sns
 
+
+
 class Train:
     
     def __init__(
@@ -46,6 +48,7 @@ class Train:
         self.seed_levels = seed_levels
         
         self.env = make_env(num_envs, num_levels=num_levels, env_name="coinrun", distribution_mode=distribution_mode, seed_levels=seed_levels)
+        self.eval_env = make_env(num_envs, start_level=0, num_levels=0,seed_levels=1010)
         self.obs = self.env.reset()
         
         print("Observation space:", self.env.observation_space)
@@ -72,6 +75,7 @@ class Train:
         
         # For tracking reward during training
         self.save_step = 1
+        self.save_step_eval = 1e3
         
         
         # Used to saved the mean reward
@@ -85,7 +89,43 @@ class Train:
         if not os.path.exists(self.run_name):
             os.makedirs(self.run_name)
     
+    def evaluate_model(self):
+        total_reward = []
+        obs = self.eval_env.reset()
 
+        for _ in range(128):
+            # Use policy
+            action, log_prob, value = self.policy.act(obs)
+
+            # Take step in environment
+            obs, reward, done, info = self.eval_env.step(action)
+            total_reward.append(torch.Tensor(reward))
+
+            # Render environment and store
+            #frame = (torch.Tensor(eval_env.render(mode='rgb_array'))*255.).byte()
+            #frames.append(frame)
+
+        # Calculate average return
+        stacked_total_reward = torch.stack(total_reward).sum(0)
+        total_reward = stacked_total_reward.mean(0)
+        validation_file_name = self.run_name+"/validations_model.csv"
+        df_current = pd.DataFrame({'Run name': self.run_name, 'Average_Reward': total_reward.item(), 'Step': self.step}, index=[0])
+
+            
+        if not os.path.exists(validation_file_name):
+            df_current.to_csv(validation_file_name, index=False)
+        else:
+            df_loaded = pd.read_csv(validation_file_name, delimiter=',')
+            df_save = df_loaded.append(df_current, ignore_index = True) 
+            df_save.to_csv(validation_file_name, index=False)
+
+            df_save.plot(x ='Step', y='Average_Reward', kind = 'line')
+            plt.ylabel("Reward")
+            plt.xlabel("Training step")
+            plt.savefig(self.run_name+'/last_captured_reward_evaluation.png', format="png")
+            plt.show()
+            plt.close()
+            
     def save_model_info_to_txt(self):
         param_string = "Model informations : \n"
         param_string += str(self.run_name)
@@ -217,6 +257,11 @@ class Train:
             plt.savefig(self.run_name+'/last_captured_reward_step_.png', format="png")
             plt.show()
             plt.close()
+            
+        if (self.step > self.save_step_eval):
+            self.save_step_eval += 5e4
+            self.evaluate_model()
+            #torch.save(self.policy.state_dict(), self.run_name+'/'+str(self.step)+"checkpoint.pt")
         
     def end_train_save(self):
         print("Completed training!")
