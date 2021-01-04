@@ -66,7 +66,7 @@ print('Average return:', total_reward)
 
 # Save frames as video
 frames = torch.stack(frames)
-imageio.mimsave("videos/"+run_name+'.mp4', frames, fps=25)
+imageio.mimsave("videos/50k_91_ga.mp4", frames, fps=25)
 
 
 validation_file_name = "validations.csv"

@@ -20,4 +20,4 @@ unset PYTHONPATH
 cd ~/DeepLearning/DeepLearningProject
 
 echo "Running script"
-python3 validationV2.py --run_name 50000_128steps64_1
+python3 validationV2.py --run_name experiments/seed_91/50000_model_deep_value_ga_91
