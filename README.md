@@ -1,22 +1,37 @@
-# DeepLearningProject
+# Proximal Policy Optimisation for generalisation in video games - code
 
-Final project for the course Deep Learning
+Final project for the course Deep Learning (02456) at DTU.
 
-- Stéphane
-- Astros
-- Simon
+- Stéphane G. - s192576
+- Astros E. - s192590
+- Simon W. N. - s153999
 
-## Some things to know
+## Run a training
 
-- The **model** used for **training** is on `model.py`
-- The model on `model_test.py` can be modified and used to **evaluate** with another model architecture than the main one.
-- `validationV2.py` put a result on `validation.csv`(or create the file if doesn't exist)
-- `validation_multi.py` runs validation on 5 differents seeds, and save the results.
-- ⚠️ When validating, dont forget to change the file names for the graph, or it will overwrite it.
+- Open `jobscript.sh`
+- Edit it with the hyperparameters wanted, and choose a run name.
+- Some hyperparameters relative to procgen are only editable on `utils_train.py``
+- Run the job with the following command on the DTU HPC: `bsub < jobscript.sh`
+- When the job is running, a folder with the selected `run_name` will be created, with informations about the model progressively added to it.
+
+It can also be run on any computer which works with cuda, by manually running the correct scripts.
+
+➡️ When a model is training, it periodically register the training and evaluation reward. It also save the model weights, but only at the end of the training.
+
+## Evaluate a model and generate a video
+
+- Open `jobvalidation.sh` and edit the run name with the correct path to the trained model (this folder being the root).
+- Edit validationV2.py : Import the model corresponding to the one you evaluate
+The results will be save on a csv file, and a video will be generated. you can edit the name on the validationV2.py file
+
+## Evaluate a model with multiple evaluations. No video
+
+Same procedure as above, but with `jobvalidation_muli.sh`
+
+## Generating plots
+
+with `generate_****.py` files, one can generate plots with the model results. The plot used in the report have been generated with those scripts.
+
+## Notes
 
 **utils** are separated into `utils_test` and `utils_train` because we use different environments for training and testing. `training.py` imports `utils_train` and the validations scripts import `utils_test`.
-
-## How to run on HPC
-
-`bsub < jobscript.sh`
-`bstat`
