@@ -1,0 +1,60 @@
+Model informations : 
+50_levels_easy_dvRELU
+Total steps: 12000000.0
+Num envs: 32
+Num actions: 15
+N levels: 50
+N epochs: 3
+Batch size: 512
+eps: 0.2
+grad_eps: 0.5
+Value coef: 0.5
+Entropy coef: 0.01
+Distribution mode: easyEncoder(
+  (layers): Sequential(
+    (0): Conv2d(3, 32, kernel_size=(8, 8), stride=(4, 4))
+    (1): ReLU()
+    (2): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (3): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2))
+    (4): ReLU()
+    (5): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (6): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1))
+    (7): ReLU()
+    (8): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (9): Flatten()
+    (10): Dropout(p=0.3, inplace=False)
+    (11): Linear(in_features=1024, out_features=3, bias=True)
+    (12): ReLU()
+  )
+)
+Policy(
+  (encoder): Encoder(
+    (layers): Sequential(
+      (0): Conv2d(3, 32, kernel_size=(8, 8), stride=(4, 4))
+      (1): ReLU()
+      (2): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (3): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2))
+      (4): ReLU()
+      (5): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (6): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1))
+      (7): ReLU()
+      (8): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (9): Flatten()
+      (10): Dropout(p=0.3, inplace=False)
+      (11): Linear(in_features=1024, out_features=3, bias=True)
+      (12): ReLU()
+    )
+  )
+  (policy): Linear(in_features=3, out_features=15, bias=True)
+  (value): Sequential(
+    (0): BatchNorm1d(3, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (1): Linear(in_features=3, out_features=64, bias=False)
+    (2): ReLU()
+    (3): Dropout(p=0.3, inplace=False)
+    (4): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): Linear(in_features=64, out_features=64, bias=False)
+    (6): ReLU()
+    (7): Dropout(p=0.3, inplace=False)
+    (8): Linear(in_features=64, out_features=1, bias=True)
+  )
+)
