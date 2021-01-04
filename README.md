@@ -3,10 +3,12 @@
 Final project for the course Deep Learning (02456) at DTU.
 
 - Stéphane G. - s192576
-- Astros E. - s192590
+- Ástrós E. - s192590
 - Simon W. N. - s153999
 
-## Run a training
+### 🎬Demo : https://www.youtube.com/watch?v=rD9wvL6qSqA&feature=youtu.be&ab_channel=St%C3%A9phaneGuichard
+
+## Run a training job
 
 - Open `jobscript.sh`
 - Edit it with the hyperparameters wanted, and choose a run name.
